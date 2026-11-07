@@ -1,0 +1,2649 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wonderwild · Four Puzzles & Secret Island</title>
+<link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{--ink:#49395f;--purple:#9472dd;--pink:#f49ac4;--mint:#83d9bb;--yellow:#ffdf83;--muted:#857794;--line:#eee5f5}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:'Times New Roman',Times,serif;;background:radial-gradient(ellipse at 10% 5%,#d9f5ff,transparent 32%),radial-gradient(ellipse at 90% 8%,#ffe0ef,transparent 33%),linear-gradient(145deg,#f0e9ff,#fff3e9 55%,#e2faef)}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid #8b6ddd;outline-offset:3px}
+.wrap{max-width:1120px;margin:auto;padding:18px 18px 60px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.brand{font:700 24px DynaPuff;color:#7655bc}
+.tag{border:1px solid #fff;background:#ffffffc9;border-radius:30px;padding:9px 14px;font-size:13px;font-weight:900}
+.panel{background:#ffffffdf;border:1px solid white;border-radius:28px;padding:clamp(17px,3vw,30px);box-shadow:0 16px 42px #715a9b20}
+.hero{display:flex;align-items:center;gap:15px}
+.blaz{width:88px;height:88px;flex:0 0 88px;filter:drop-shadow(0 7px 8px #604b7022)}
+.kicker{font-size:11px;letter-spacing:2px;font-weight:900;color:#a17ecb;text-transform:uppercase}
+h1,h2,h3{font-family:DynaPuff;margin:6px 0;color:#7354b3}
+h1{font-size:clamp(34px,5vw,54px);line-height:1.04}
+h2{font-size:30px}
+p{line-height:1.55;color:var(--muted)}
+.btn{border:0;border-radius:16px;padding:12px 19px;font-weight:900;color:white;background:linear-gradient(110deg,#9674e5,#ee91bd);box-shadow:0 7px 17px #9272bd30}
+.btn:hover{filter:saturate(1.12);transform:translateY(-1px)}
+.btn.alt{background:white;color:#795eae;border:2px solid #e9def7;box-shadow:none}
+.btn.gold{background:linear-gradient(110deg,#f4bb58,#f28f9e)}
+.btn.mint{background:linear-gradient(110deg,#5fcaa9,#78cde3)}
+.briefgrid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-top:18px}
+.card{background:#fff;border:1px solid #eee5f5;border-radius:20px;padding:16px}
+.card h3{font-size:21px}
+.instruction{display:flex;gap:10px;align-items:flex-start;margin:9px 0;color:#766884;font-size:14px}
+.key{display:inline-grid;place-items:center;min-width:28px;height:27px;padding:0 7px;border-radius:8px;background:#f0eaff;color:#7055ad;font-weight:900;border:1px solid #e3d7f6}
+.compounds{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.compound{border:2px solid #eee5f5;background:#fff;border-radius:15px;padding:11px 8px;text-align:center;color:var(--ink);font-weight:900}
+.compound small{display:block;color:var(--muted);font-size:11px;font-weight:700;margin-top:4px}
+.compound.selected{border-color:#9977df;background:#f7f1ff;box-shadow:0 0 0 3px #9977df18}
+.stage{position:relative;margin-top:16px;background:#fff;border:1px solid #eee5f5;border-radius:23px;padding:12px;overflow:hidden}
+.trackcanvas{display:block;width:100%;height:auto;border-radius:16px;background:#9bd7a5}
+.hud{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:12px 0}
+.metric{background:#fff;border:1px solid #eee5f5;border-radius:14px;padding:9px 10px;min-width:0}
+.metric label{display:block;font-size:10px;letter-spacing:1px;font-weight:900;color:#9889a7}
+.metric strong{display:block;font:700 22px DynaPuff;color:#7254b5;white-space:nowrap}
+.metric em{font-style:normal;font-size:11px;color:var(--muted)}
+.bar{height:7px;background:#eee8f5;border-radius:20px;overflow:hidden;margin-top:5px}
+.bar span{display:block;height:100%;background:linear-gradient(90deg,#8f74df,#f49ac4);width:100%}
+.status{min-height:40px;border-radius:13px;background:#fff4df;color:#80602d;padding:10px 13px;font-size:13px;font-weight:900;margin:10px 0}
+.controls{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.controlhint{font-size:12px;color:var(--muted)}
+.touch{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.touch button{height:43px;min-width:45px;border:0;border-radius:12px;background:#f1eaff;color:#7155b3;font-weight:900;touch-action:none}
+.touch .accelerate{background:#dcf7eb;color:#397d64}
+.touch .boost{background:#fff0cb;color:#906520}
+.touch .pitbtn{background:#dff3ff;color:#347ca5;border:1px solid #a7d7ee;font-weight:1000}
+.touch .pitenter{background:#dbf4e9;color:#34765e}
+.standings{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.standing{background:#fff;border:1px solid #eee5f5;border-radius:13px;padding:9px 10px;min-width:0}
+.standing.me{background:#f4efff;border-color:#a88ce8;box-shadow:0 0 0 2px #a88ce822}
+.standing .rank{font:700 18px DynaPuff;color:#7655bc}
+.standing b{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.standing small{color:#8b7d9a;font-size:10px}
+.standing .miniBar{height:5px;border-radius:8px;background:#eee8f5;overflow:hidden;margin-top:6px}
+.standing .miniBar span{display:block;height:100%;background:linear-gradient(90deg,#8e73df,#f49ac4);width:0}
+.position-flash{animation:rankPulse .5s ease}
+@keyframes rankPulse{0%{transform:scale(1)}45%{transform:scale(1.18);color:#e579a9}100%{transform:scale(1)}}
+.pitkey{font-size:12px;color:#497f9c;background:#e6f6ff;border:1px solid #c5e8f7;border-radius:12px;padding:9px 11px;margin-top:8px}
+.pittyres{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;align-items:center}
+.pittyres button{border:1px solid #c5e8f7;background:white;color:#377ba0;border-radius:10px;padding:7px 10px;font-weight:900;font-size:12px}
+.pittyres button.selected{background:#dff3ff;border-color:#328ab8;box-shadow:0 0 0 2px #328ab822}
+.overlay{position:absolute;inset:12px;background:#453452bd;backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:15px;border-radius:17px;z-index:5}
+.modal{width:min(640px,100%);background:#fffdfb;border:2px solid #fff;border-radius:23px;padding:clamp(17px,3vw,27px);box-shadow:0 18px 50px #21172d55;max-height:100%;overflow:auto}
+.modal p{font-size:14px}
+.modal h2{margin-top:5px}
+.modal .btn{margin-top:8px}
+.countnum{font:700 clamp(64px,13vw,110px) DynaPuff;color:white;text-shadow:0 6px 0 #7355b3}
+.result{display:none;margin-top:14px}
+.result.show{display:block}
+.resultinner{background:#fff;border:1px solid #eee5f5;border-radius:20px;padding:18px;text-align:center}
+.resultinner .emoji{font-size:65px}
+.tiny{font-size:11px;color:#9889a7}
+.hidden{display:none!important}
+@media(max-width:760px){
+ .standings{grid-template-columns:1fr}
+ .briefgrid{grid-template-columns:1fr}
+ .hud{grid-template-columns:repeat(3,1fr)}
+ .hero{align-items:flex-start}
+ .blaz{width:68px;height:68px;flex-basis:68px}
+ .controls{align-items:flex-start}
+ .controlhint{max-width:100%}
+}
+@media(max-width:430px){
+ .hud{grid-template-columns:repeat(2,1fr)}
+ .compounds{grid-template-columns:1fr}
+ .compound{text-align:left}
+ .compound small{display:inline;margin-left:6px}
+ .touch button{min-width:39px;height:40px}
+}
+
+/* Wonderwild opening screen */
+.welcome-wrap{max-width:1120px;margin:0 auto;padding:22px 18px 65px}
+.welcome-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.welcome-hero{position:relative;overflow:hidden;padding:clamp(24px,5vw,48px);background:linear-gradient(135deg,#fffdfd 0%,#fff8ff 47%,#f2fffa 100%)}
+.welcome-hero:before,.welcome-hero:after{content:'✦';position:absolute;color:#f4bfd9;font-size:52px;opacity:.72;animation:twinkle 3s ease-in-out infinite}
+.welcome-hero:before{right:9%;top:9%}
+.welcome-hero:after{left:6%;bottom:10%;font-size:32px;color:#9bd9ca;animation-delay:1s}
+@keyframes twinkle{50%{transform:rotate(25deg) scale(1.22);opacity:1}}
+.welcome-main{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;position:relative;z-index:1}
+.welcome-title{font-size:clamp(44px,7vw,76px);line-height:.98;margin:9px 0 14px}
+.welcome-copy{font-size:17px;max-width:600px}
+.welcome-mascot{display:grid;place-items:center;min-height:245px;position:relative}
+.welcome-mascot .blaz{width:min(260px,80%);height:auto;filter:drop-shadow(0 18px 17px #775d8a25);animation:mascotFloat 3.4s ease-in-out infinite}
+@keyframes mascotFloat{50%{transform:translateY(-12px) rotate(3deg)}}
+.orbit{position:absolute;border:2px dashed #e8d8fa;border-radius:50%;width:270px;height:210px;transform:rotate(-13deg)}
+.welcome-stats{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0 22px}
+.welcome-stat{background:#fff;border:1px solid #f1e6f8;border-radius:15px;padding:9px 13px;font-size:12px;font-weight:900;color:#8067a6}
+.welcome-foot{margin-top:18px;text-align:center;font-size:12px;color:#998ba8}
+#raceApp.hidden{display:none}
+@media(max-width:760px){
+ .welcome-main{grid-template-columns:1fr}
+ .welcome-mascot{min-height:175px;grid-row:1}
+ .welcome-mascot .blaz{width:165px}
+ .orbit{width:185px;height:150px}
+ .welcome-copy{font-size:15px}
+}
+
+
+/* FLOOFI'S F1 CROSSWORD — GAME 02 */
+.floofi-wrap{max-width:1120px;margin:auto;padding:18px 18px 60px}
+.floofi-hero{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.floofi-mascot{width:76px;height:76px;flex:0 0 76px;border-radius:22px;background:linear-gradient(135deg,#e5f8ff,#f6eaff);display:grid;place-items:center;font-size:42px}
+.floofi-instructions{background:#fff;border:1px solid #eee5f5;border-radius:20px;padding:18px;margin:14px 0}
+.floofi-instructions ul{padding-left:20px;margin:8px 0;color:#766884;line-height:1.65}
+.floofi-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0}
+.floofi-stat{background:#fff;border:1px solid #eee5f5;border-radius:14px;padding:10px 12px}
+.floofi-stat label{display:block;color:#9889a7;font-size:10px;font-weight:900;letter-spacing:1px}
+ .floofi-stat strong{display:block;color:#7254b5;font:700 22px DynaPuff;margin-top:3px}
+.floofi-progress{height:8px;background:#eee8f5;border-radius:20px;overflow:hidden;margin-top:6px}
+.floofi-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#8f74df,#f49ac4);transition:width .2s}
+.floofi-board-layout{display:grid;grid-template-columns:minmax(0,1.13fr) minmax(280px,.87fr);gap:15px;align-items:start;margin-top:14px}
+.floofi-grid-card,.floofi-clues-card{background:#fff;border:1px solid #eee5f5;border-radius:20px;padding:14px;min-width:0}
+.floofi-grid-scroll{width:100%;overflow-x:auto;padding:3px 2px 10px;overscroll-behavior-x:contain}
+.floofi-grid{display:grid;grid-template-columns:repeat(21,minmax(0,1fr));gap:2px;width:100%;min-width:525px;aspect-ratio:1/1;background:#d9d0e8;padding:2px;border-radius:8px}
+.cw-block{background:#645a70;border-radius:2px}
+.cw-cell{position:relative;min-width:0;min-height:0;background:#fff;border-radius:2px}
+.cw-cell input{display:block;width:100%;height:100%;min-width:0;min-height:0;border:0;border-radius:2px;background:transparent;text-align:center;text-transform:uppercase;color:#49395f;font:800 clamp(9px,1.55vw,17px) Times New Roman;padding:7px 0 0;outline:0}
+.cw-cell input:focus{background:#fff5c9;box-shadow:inset 0 0 0 2px #c59a43}
+.cw-num{position:absolute;left:2px;top:0px;font:800 clamp(5px,.66vw,8px) Times New Roman;color:#897b9b;line-height:1;pointer-events:none;z-index:1}
+.cw-cell.cw-active{background:#eee7ff}
+.cw-cell.cw-current{box-shadow:inset 0 0 0 2px #946fdd;background:#fff1bd;z-index:2}
+.cw-cell.cw-correct input{color:#248568}
+.floofi-clue-group+.floofi-clue-group{margin-top:15px;padding-top:12px;border-top:1px solid #eee5f5}
+.floofi-clue-group h3{font-size:18px;margin:0 0 8px}
+.floofi-clue-list{display:grid;gap:5px}
+.cw-clue{display:flex;align-items:flex-start;gap:8px;width:100%;border:1px solid transparent;background:#fff;border-radius:10px;padding:7px 8px;text-align:left;color:#766884;font-size:12px;line-height:1.4}
+.cw-clue:hover{background:#faf7ff;border-color:#eee5f5}
+.cw-clue.active{background:#f1eaff;border-color:#cbb8ef;color:#57417f}
+.cw-clue-num{font:700 14px DynaPuff;color:#8969ce;min-width:19px}
+.floofi-actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.floofi-feedback{min-height:44px;padding:11px 13px;border-radius:13px;background:#fff4df;color:#80602d;font-size:13px;font-weight:900;margin:10px 0}
+.floofi-result{display:none;margin-top:14px}
+.floofi-result.show{display:block}
+.floofi-result-inner{background:#fff;border:1px solid #eee5f5;border-radius:20px;padding:20px;text-align:center}
+.floofi-result-emoji{font-size:58px}
+.floofi-result-inner p{max-width:650px;margin:8px auto 14px}
+.floofi-tag{display:inline-block;border:1px solid #eee5f5;background:#fff;border-radius:30px;padding:7px 11px;font-size:11px;font-weight:900;color:#8067a6}
+@media(max-width:850px){.floofi-board-layout{grid-template-columns:1fr}.floofi-grid{min-width:525px}}
+@media(max-width:520px){.floofi-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.floofi-hero{align-items:flex-start}.floofi-mascot{width:60px;height:60px;flex-basis:60px;font-size:34px}.floofi-grid{min-width:490px}}
+
+
+
+/* GAME 3 — PUFFWING'S BUILD BATTLE */
+.build-wrap{max-width:1120px;margin:auto;padding:18px 18px 60px}
+.build-hero{display:flex;align-items:center;gap:14px;margin-bottom:15px}
+.build-mascot{width:76px;height:76px;flex:0 0 76px;border-radius:22px;background:linear-gradient(135deg,#e2f7ff,#e9e4ff);display:grid;place-items:center;font-size:43px}
+.build-instructions{background:#fff;border:1px solid #eee5f5;border-radius:20px;padding:18px;margin:14px 0}
+ .build-reference{
+ margin:10px 0 14px;
+ padding:10px 12px;
+ border:1px solid #eee5f5;
+ border-radius:13px;
+ background:#fbf9ff;
+}
+
+.build-reference summary{
+ cursor:pointer;
+ color:#7655bc;
+ font-size:12px;
+ font-weight:900;
+}
+
+.build-reference ol{
+ max-height:220px;
+ overflow-y:auto;
+ padding-left:18px;
+ margin:8px 0 0;
+ color:#766884;
+ font-size:11px;
+ line-height:1.5;
+}
+
+.build-reference li{
+ margin-bottom:6px;
+}
+.build-instructions ul,.build-instructions ol{padding-left:20px;color:#766884;line-height:1.65}
+.build-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(270px,.85fr);gap:15px;align-items:start}
+.build-board-card,.build-tools-card{background:#fff;border:1px solid #eee5f5;border-radius:20px;padding:14px;min-width:0}
+.build-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;width:100%;max-width:560px;margin:auto;padding:8px;border-radius:17px;background:linear-gradient(145deg,#bfe5ef,#d7f0e9);box-shadow:inset 0 0 0 1px #fff}
+.build-cell{position:relative;aspect-ratio:1/1;min-width:0;border:1px solid #c9d9d9;border-radius:9px;background:linear-gradient(145deg,#e9f6d9,#d8edcf);display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:2px;padding:2px;box-shadow:0 2px 0 #b4c7b3;transition:transform .12s,border-color .12s}
+.build-cell:hover{transform:translateY(-2px);border-color:#8a74cf}
+.build-cell:focus-visible{outline:3px solid #8b6ddd;outline-offset:1px}
+.build-cell .piece{font:900 clamp(8px,1.5vw,15px) Times New Roman;line-height:1.1;border-radius:4px;padding:3px 4px;box-shadow:0 1px 2px #594c5c20}
+.build-cell .piece.floor{background:#d2a16e;color:#654321}
+.build-cell .piece.wall{background:#aab6c8;color:#384b63}
+.build-cell .piece.door{background:#8b5a3d;color:#fff6e8}
+.build-cell .piece.roof{background:#9a7acb;color:white}
+.build-cell .piece.ramp{background:#f3c76d;color:#72501c}
+.build-cell .cell-coord{position:absolute;left:3px;top:2px;color:#6f8c76;font-size:7px;font-weight:900;opacity:.65}
+.build-cell.has-floor{background:#d7b48b}
+.build-cell.has-ramp{background:#f7e2a9}
+.build-toolbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:10px 0}
+.build-tool{border:2px solid #eee5f5;background:#fff;border-radius:12px;padding:10px 8px;color:#6f5a8f;font-weight:900;text-align:left;font-size:12px}
+.build-tool small{display:block;color:#9688a4;font-size:10px;font-weight:800;margin-top:3px}
+.build-tool.active{border-color:#9272d9;background:#f4efff;box-shadow:0 0 0 2px #9272d922}
+.build-resources{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}
+.build-resource{border:1px solid #eee5f5;background:#fff;border-radius:13px;padding:9px 10px}
+.build-resource label{display:block;font-size:10px;letter-spacing:1px;color:#9889a7;font-weight:900}
+.build-resource strong{font:700 22px DynaPuff;color:#7254b5}
+.build-hud{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.build-hud .metric strong{font-size:20px}
+.build-storm{height:8px;border-radius:20px;background:#eee8f5;overflow:hidden;margin-top:5px}
+.build-storm span{display:block;width:0;height:100%;background:linear-gradient(90deg,#7bc9e1,#f2a1bd);transition:width .2s}
+.build-feedback{min-height:45px;border-radius:13px;background:#fff4df;color:#80602d;padding:11px 13px;font-size:13px;font-weight:900;margin:10px 0}
+.build-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.build-overlay{position:fixed;inset:0;z-index:30;background:#40304ebd;backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:16px}
+.build-count{font:700 clamp(70px,14vw,120px) DynaPuff;color:#fff;text-shadow:0 7px 0 #7655bc}
+.build-result{display:none;margin-top:14px}
+.build-result.show{display:block}
+.build-result-inner{border:1px solid #eee5f5;border-radius:20px;background:#fff;text-align:center;padding:20px}
+.build-result-emoji{font-size:58px}
+@media(max-width:850px){.build-layout{grid-template-columns:1fr}.build-grid{max-width:490px}}
+@media(max-width:520px){.build-hero{align-items:flex-start}.build-mascot{width:60px;height:60px;flex-basis:60px;font-size:34px}.build-grid{gap:3px;padding:5px}.build-cell{border-radius:6px}.build-cell .piece{padding:2px;font-size:8px}.build-hud{grid-template-columns:repeat(2,1fr)}}
+
+/* GAME 4 — STARFALL ARENA */
+.arena-wrap{max-width:1120px;margin:auto;padding:18px 18px 60px}
+.arena-panel{position:relative;overflow:hidden;background:radial-gradient(ellipse at 10% 0%,#554b8a 0%,transparent 38%),radial-gradient(ellipse at 90% 20%,#315b79 0%,transparent 36%),linear-gradient(145deg,#17182f,#282447 55%,#1d3547);border:1px solid #675d91;color:#f8f4ff}
+.arena-panel h1,.arena-panel h2,.arena-panel h3{color:#fff}
+.arena-panel p{color:#d2cce7}
+.arena-panel .kicker{color:#bda8ff}
+.arena-topline{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:13px}
+.arena-tag{border:1px solid #74689a;background:#373051;border-radius:30px;padding:8px 12px;color:#e7dcff;font-size:11px;font-weight:900}
+.arena-brief{padding:18px;border:1px solid #5a5278;border-radius:19px;background:#ffffff0a;margin:12px 0}
+.arena-rules-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.arena-rule{display:flex;flex-direction:column;gap:5px;padding:10px 11px;border:1px solid #665b86;border-radius:12px;background:#ffffff0b;color:#eee8fb;font-size:12px;line-height:1.45}
+.arena-rule b{font:700 14px DynaPuff;color:#ffdfa0}
+.arena-rule span{color:#d3cbe4}
+.arena-rules-list{padding-left:20px;color:#ddd5ee;line-height:1.6;font-size:12px}
+.arena-rules-list li{margin:5px 0}
+@media(max-width:520px){.arena-rules-grid{grid-template-columns:1fr}}
+.arena-fighter-picker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.arena-fighter{border:2px solid #51496f;background:#26243e;border-radius:17px;padding:14px 10px;color:#f5efff;text-align:center;min-width:0}
+.arena-fighter.selected{border-color:#d5a4ff;background:#383052;box-shadow:0 0 0 3px #d5a4ff22}
+.arena-fighter .fighter-emoji{font-size:42px;display:block;margin-bottom:5px}
+.arena-fighter b{display:block;font:700 18px DynaPuff}
+.arena-fighter small{display:block;color:#c7bedf;font-size:11px;margin-top:4px}
+.arena-stage{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;margin:14px 0}
+.arena-combatant{position:relative;overflow:hidden;border:1px solid #5b547a;border-radius:18px;padding:17px;background:linear-gradient(145deg,#35304f,#20253d);min-height:205px}
+.arena-combatant.enemy{background:linear-gradient(145deg,#402c51,#20233a)}
+.arena-combatant .combatant-emoji{font-size:66px;text-align:center;filter:drop-shadow(0 8px 15px #0005);margin:3px 0 8px}
+ .arena-combatant h3{text-align:center;margin:0 0 8px}
+.arena-hp-label{display:flex;justify-content:space-between;gap:8px;color:#ddd5f1;font-size:11px;font-weight:900}
+.arena-hp{height:10px;background:#17172c;border-radius:20px;overflow:hidden;margin:5px 0 9px}
+.arena-hp span{display:block;width:100%;height:100%;background:linear-gradient(90deg,#66d5ae,#d9f18f);transition:width .25s}
+.arena-combatant.enemy .arena-hp span{background:linear-gradient(90deg,#ed769d,#a58af5)}
+.arena-energy{height:7px;background:#17172c;border-radius:20px;overflow:hidden;margin:5px 0}
+.arena-energy span{display:block;height:100%;width:0;background:linear-gradient(90deg,#6bbfe8,#b8a0ff)}
+.arena-vs{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:#f4d58d;color:#5a3f36;display:grid;place-items:center;font:700 19px DynaPuff;border:4px solid #32294c;box-shadow:0 5px 15px #0005}
+.arena-log{min-height:92px;max-height:160px;overflow:auto;border:1px solid #5b547a;border-radius:14px;padding:12px;background:#17182c;color:#e6def5;font-size:13px;line-height:1.55}
+.arena-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}
+.arena-action{border:1px solid #76699c;border-radius:13px;padding:12px;background:linear-gradient(140deg,#514477,#343250);color:#fff;font-weight:900;text-align:left}
+.arena-action small{display:block;color:#d5cbea;font-size:10px;font-weight:700;margin-top:4px}
+.arena-action:disabled{opacity:.4;cursor:not-allowed;filter:grayscale(.6)}
+.arena-status{border:1px solid #696087;border-radius:13px;background:#ffffff0c;color:#e9ddff;padding:10px 12px;font-size:12px;font-weight:900;margin:10px 0}
+.arena-result{display:none;margin-top:14px;border:1px solid #8a7ab0;border-radius:20px;padding:20px;background:linear-gradient(145deg,#42375e,#24243d);text-align:center}
+.arena-result.show{display:block}
+.arena-result-emoji{font-size:62px}
+.arena-map-reveal{display:none;margin-top:14px;border:1px solid #8dd8c6;border-radius:18px;padding:17px;background:linear-gradient(135deg,#153d49,#284c57);color:#e9fff7;text-align:left}
+.arena-map-reveal.show{display:block}
+.arena-map-art{height:155px;position:relative;overflow:hidden;border-radius:14px;margin:12px 0;background:radial-gradient(ellipse at 50% 65%,#73c9a0 0 20%,transparent 21%),radial-gradient(ellipse at 23% 38%,#9edcba 0 13%,transparent 14%),radial-gradient(ellipse at 76% 35%,#a6dfbb 0 16%,transparent 17%),linear-gradient(145deg,#7cd1db,#4999b7 52%,#27677d)}
+.arena-map-art:before{content:'✦';position:absolute;left:50%;top:19%;color:#fff6c4;font-size:25px;text-shadow:0 0 18px #fff}
+.arena-map-art:after{content:'CHOCOBLOOM ISLAND';position:absolute;bottom:10px;left:0;right:0;text-align:center;color:#fff;font:700 15px DynaPuff;letter-spacing:2px;text-shadow:0 2px 5px #245}
+@media(max-width:650px){.arena-fighter-picker{grid-template-columns:1fr}.arena-fighter{text-align:left;display:flex;align-items:center;gap:12px}.arena-fighter .fighter-emoji{margin:0;font-size:37px}.arena-stage{grid-template-columns:1fr}.arena-vs{top:50%}.arena-combatant{min-height:170px}.arena-actions{grid-template-columns:1fr 1fr}}
+
+
+/* CHOCOBLOOM ISLAND — WORLD MAP, LOGIC TREASURE HUNT, FINAL LETTER */
+.island-wrap,.treasure-wrap,.letter-wrap{max-width:1120px;margin:auto;padding:18px 18px 60px}
+.island-panel{background:linear-gradient(145deg,#fffdf7,#f0fff7 58%,#f1f4ff);border:1px solid white;border-radius:28px;padding:clamp(17px,3vw,30px);box-shadow:0 16px 42px #715a9b20}
+.island-hero{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.island-emblem{width:76px;height:76px;flex:0 0 76px;border-radius:23px;display:grid;place-items:center;font-size:40px;background:linear-gradient(135deg,#d4f8e8,#fff0c7)}
+.island-map-frame{position:relative;overflow:hidden;border:2px solid #d1e8dc;border-radius:22px;background:#8ad0da;aspect-ratio:16/10;min-height:390px;box-shadow:inset 0 0 35px #287f7b26}
+.island-map-svg{position:absolute;inset:0;width:100%;height:100%}
+.island-pin{position:absolute;z-index:3;transform:translate(-50%,-50%);border:2px solid #fff;border-radius:15px;padding:7px 9px;min-width:92px;background:#fffdf0;color:#554c6b;box-shadow:0 5px 13px #234b5140;font-size:11px;font-weight:1000;line-height:1.18;text-align:center;transition:transform .15s,filter .15s}
+.island-pin span{display:block;font-size:20px;margin-bottom:3px}
+.island-pin.active{border-color:#f2c45e;background:#fff5cb;box-shadow:0 0 0 4px #ffdf834d,0 7px 16px #234b5155;animation:islandPulse 1.7s infinite}
+.island-pin.done{border-color:#80cfae;background:#eafff3;color:#367b63}
+.island-pin.locked{opacity:.58;filter:saturate(.55);cursor:not-allowed;background:#e9e7ee}
+.island-pin:hover:not(.locked){transform:translate(-50%,-50%) scale(1.05)}
+@keyframes islandPulse{50%{box-shadow:0 0 0 7px #ffdf8324,0 7px 16px #234b5155}}
+.island-map-caption{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0;color:#718a88;font-size:11px;font-weight:900}
+.island-legend{display:flex;gap:12px;flex-wrap:wrap}
+.island-legend span{display:flex;align-items:center;gap:5px}
+.island-dot{width:9px;height:9px;border-radius:50%;display:inline-block;background:#f2c45e}.island-dot.done{background:#80cfae}.island-dot.locked{background:#aaa5b4}
+.island-map-lower{display:grid;grid-template-columns:1fr .85fr;gap:13px;margin-top:14px}
+.island-card{background:#fff;border:1px solid #e7eee8;border-radius:18px;padding:15px}
+.island-card h3{font-size:20px;margin:0 0 7px}
+.island-card p{font-size:13px;margin:6px 0}
+.island-progress{height:8px;background:#e9f0eb;border-radius:20px;overflow:hidden;margin:9px 0}
+.island-progress span{display:block;height:100%;background:linear-gradient(90deg,#65c9a5,#eebf69);width:0;transition:width .2s}
+.island-status{min-height:40px;border-radius:12px;background:#fff5de;color:#80602d;padding:10px 12px;margin-top:10px;font-size:12px;font-weight:900}
+.island-treasure-callout{border:1px solid #efd99b;border-radius:17px;background:linear-gradient(135deg,#fff8df,#fff1e5);padding:14px;margin-top:12px}
+.treasure-panel{background:#fffdf9;border:1px solid white;border-radius:28px;padding:clamp(17px,3vw,30px);box-shadow:0 16px 42px #715a9b20}
+.treasure-heading{display:flex;align-items:center;gap:13px;margin-bottom:12px}
+.treasure-icon{width:67px;height:67px;flex:0 0 67px;border-radius:20px;background:linear-gradient(135deg,#fff0c6,#ffe0e7);display:grid;place-items:center;font-size:36px}
+.treasure-hud{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:13px 0}
+.treasure-stat{border:1px solid #eee5f5;background:#fff;border-radius:13px;padding:10px}
+.treasure-stat label{display:block;color:#9889a7;font-size:10px;letter-spacing:1px;font-weight:900}
+.treasure-stat strong{display:block;color:#7254b5;font:700 21px DynaPuff;margin-top:3px}
+.treasure-clue{border:1px solid #eee5f5;border-radius:20px;background:linear-gradient(145deg,#fff,#f9f6ff);padding:18px;margin:13px 0}
+.treasure-clue .kicker{margin-bottom:7px}
+.treasure-clue h2{font-size:26px}
+.treasure-question{font-size:16px;color:#665a78;line-height:1.7;white-space:pre-line}
+.treasure-answer-row{display:flex;gap:8px;flex-wrap:wrap;margin:13px 0}
+.treasure-answer-row input{flex:1;min-width:180px;border:2px solid #e7def2;border-radius:13px;padding:12px 14px;font:800 16px Times New Roman;color:#49395f;background:#fff}
+.treasure-answer-row input:focus{outline:3px solid #cbb8ef;border-color:#9472dd}
+.treasure-feedback{min-height:45px;border-radius:13px;background:#fff4df;color:#80602d;padding:11px 13px;font-size:13px;font-weight:900;margin:10px 0}
+.treasure-hint{display:none;border:1px dashed #e2c77e;background:#fff9e7;border-radius:12px;padding:11px 13px;color:#765a2f;font-size:13px;line-height:1.5;margin-top:9px}
+.treasure-hint.show{display:block}
+.treasure-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.treasure-route-note{border-left:4px solid #8f78d2;padding:9px 12px;background:#f5f0ff;border-radius:0 12px 12px 0;color:#6f5d8d;font-size:12px;line-height:1.5;margin:10px 0}
+.letter-panel{background:linear-gradient(145deg,#fffdfb,#fff8f2 58%,#f4fff9);border:1px solid white;border-radius:28px;padding:clamp(18px,4vw,38px);box-shadow:0 16px 42px #715a9b20}
+.letter-envelope{width:90px;height:72px;margin:0 auto 14px;display:grid;place-items:center;font-size:54px;filter:drop-shadow(0 7px 8px #a47d8525)}
+.letter-title{text-align:center;font-size:clamp(32px,5vw,48px)}
+.letter-intro{max-width:650px;margin:8px auto 19px;text-align:center}
+.letter-paper{max-width:780px;margin:18px auto 12px;padding:clamp(15px,3vw,25px);border:1px solid #eadfca;border-radius:17px;background:repeating-linear-gradient(to bottom,#fffdf8 0px,#fffdf8 34px,#f0e5d4 35px);box-shadow:0 9px 24px #705b4620}
+.letter-paper textarea{display:block;width:100%;min-height:330px;resize:vertical;border:0;outline:0;background:transparent;color:#51445d;font:600 16px/35px Times New Roman;padding:0 4px}
+.letter-paper textarea::placeholder{color:#b4a7a0;opacity:1}
+.letter-save-state{text-align:center;color:#8b7d9a;font-size:11px;margin:8px 0}
+.letter-actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:13px}
+@media(max-width:760px){.island-map-lower{grid-template-columns:1fr}.island-map-frame{min-height:345px;aspect-ratio:1/1}.island-pin{min-width:74px;padding:6px 5px;font-size:9px;border-radius:12px}.island-pin span{font-size:17px}.treasure-hud{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:480px){.island-map-frame{min-height:310px}.island-pin{min-width:65px;font-size:8px}.treasure-heading{align-items:flex-start}.treasure-hud{grid-template-columns:1fr 1fr}.letter-paper textarea{min-height:270px;font-size:14px;line-height:32px}}
+
+
+/* ANIMO COLLECTION + UNLOCK REVEALS */
+.collection-panel{margin-top:18px;padding:20px;background:#ffffffdf;border:1px solid white;border-radius:24px;box-shadow:0 12px 32px #715a9b18}
+.collection-heading{display:flex;justify-content:space-between;align-items:end;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.collection-heading h2{font-size:25px;margin:0}
+.collection-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.collection-card{min-width:0;text-align:center;padding:11px 8px;border:1px solid #eee5f5;border-radius:17px;background:linear-gradient(145deg,#fff,#fbf8ff)}
+.collection-card.locked{filter:saturate(.35);opacity:.65;background:#f5f2f7}
+.creature-art{display:block;width:100%;max-width:120px;height:104px;margin:0 auto 5px}
+.collection-card b{display:block;font:700 14px DynaPuff;color:#7655bc}
+.collection-card small{display:block;margin-top:4px;color:#93869f;font-size:10px;font-weight:800}
+.creature-reveal{display:none;margin:14px auto 8px;padding:14px;max-width:520px;border:2px solid #f1d9a1;border-radius:19px;background:linear-gradient(135deg,#fff9e5,#fff0f6);text-align:center}
+.creature-reveal.show{display:block;animation:revealPop .45s ease-out}
+.creature-reveal .creature-art{width:145px;height:125px;max-width:100%;margin:0 auto 2px}
+.creature-reveal .reveal-kicker{font-size:10px;letter-spacing:1.5px;font-weight:900;color:#b27b39}
+.creature-reveal h3{margin:4px 0;font-size:23px}
+.creature-reveal p{margin:3px 0 0;font-size:12px}
+@keyframes revealPop{0%{transform:scale(.88);opacity:0}100%{transform:scale(1);opacity:1}}
+.letter-paper .letter-copy{display:block;white-space:pre-wrap;margin:0;color:#51445d;font:600 16px/35px 'Times New Roman',Times,serif;padding:0 4px}
+@media(max-width:760px){.collection-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.collection-panel{padding:15px}}
+@media(max-width:430px){.collection-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.letter-paper .letter-copy{font-size:14px;line-height:32px}}
+
+</style>
+</head>
+
+<body>
+ <div class="welcome-wrap" id="welcomeScreen">
+  <section class="panel welcome-hero">
+  <div class="welcome-main">
+   <div>
+    <div class="kicker">YOUR ADVENTURE STARTS HERE</div>
+    <h1 class="welcome-title">Welcome to<br><span style="color:#e58ab9">WONDERWILD</span>!</h1>
+    <p class="welcome-copy">A tiny world full of ridiculously cute creatures, chaotic challenges and a few surprises hidden along the way. Win the challenges, follow the treasure trail, and collect every Animo!</p>
+
+    <div class="welcome-stats">
+ <span class="welcome-stat">✨ FOUR LITTLE MENACES. ONE QUESTIONABLE PLAN.</span>
+ <span class="welcome-stat">🏁 RED LIGHTS. BAD DECISIONS. FAST CONSEQUENCES.</span>
+ <span class="welcome-stat">☁️  SOME THINGS ARE HARDER TO FIGURE OUT THAN THEY LOOK.</span>
+ <span class="welcome-stat">🧱 TRUST THE PLAN. QUESTION GRAVITY.</span>
+ <span class="welcome-stat">⚔️ NOT EVERYONE YOU MEET IS HERE TO BE FRIENDLY.</span>
+ <span class="welcome-stat">🍫 SOMEONE'S BEEN HOARDING THE GOOD STUFF. RUDE.</span>
+</div>
+
+     <div class="player-entry" style="max-width:430px;margin:16px 0 10px;padding:16px;border:1px solid #eadff7;border-radius:18px;background:#fff9ff">
+     <label for="playerNameInput" style="display:block;font-weight:900;margin-bottom:7px">✨ WHAT SHOULD WE CALL YOU, ADVENTURER?</label>
+     <input id="playerNameInput" maxlength="24" autocomplete="given-name" placeholder="Enter your name" style="width:100%;padding:13px 14px;border:2px solid #e6d8f4;border-radius:12px;font:600 16px inherit;color:#51445d;background:white">
+     <button class="btn gold" style="display:block;font-size:16px;padding:15px 23px;width:100%;margin-top:14px" onclick="enterGrandPrix()">LET'S START THE ADVENTURE ✨</button>
+    </div>
+   </div>
+
+   <div class="welcome-mascot">
+    <div class="orbit"></div>
+    <svg class="blaz" viewBox="0 0 100 100" role="img" aria-label="Blazbit, your little fire gremlin">
+     <path d="M22 67Q8 45 31 30Q28 48 43 42Q39 20 67 9Q62 33 80 39Q97 56 77 78Q61 95 37 84Z" fill="#ffad72" stroke="#e66d71" stroke-width="4"/>
+     <path d="M31 40L21 18Q39 20 45 37M66 31L81 14Q89 33 77 43" fill="#ffdf83" stroke="#e66d71" stroke-width="3"/>
+     <ellipse cx="41" cy="61" rx="4" ry="6" fill="#49395f"/>
+     <ellipse cx="63" cy="61" rx="4" ry="6" fill="#49395f"/>
+     <circle cx="42" cy="59" r="1.5" fill="white"/>
+     <circle cx="64" cy="59" r="1.5" fill="white"/>
+     <ellipse cx="32" cy="70" rx="6" ry="4" fill="#f28fac"/>
+     <ellipse cx="72" cy="70" rx="6" ry="4" fill="#f28fac"/>
+     <path d="M47 73Q52 78 58 73" fill="none" stroke="#49395f" stroke-width="3" stroke-linecap="round"/>
+     <path d="M83 13l4-9 4 9 9 4-9 4-4 9-4-9-9-4z" fill="#ffdf83"/>
+    </svg>
+   </div>
+  </div>
+ </section>
+
+ <div class="welcome-foot">Made with a little magic, chaos, and a whole lot of mischief. ✨</div>
+</div>
+
+<div id="raceApp" class="hidden">
+<div class="wrap">
+
+<header class="top">
+ <div class="brand">✦ WONDERWILD <span style="color:#b69ce8">/</span> Blazbit's GRAND PRIX</div>
+ <div class="row">
+  <span class="tag">🏁 PUZZLE · 01</span>
+  <button class="btn alt" onclick="returnToWelcome()">← World intro</button>
+ </div>
+</header>
+
+<section class="panel">
+
+ <div class="hero">
+  <svg class="blaz" viewBox="0 0 100 100" aria-label="Blazbit the fire creature">
+   <path d="M22 67Q8 45 31 30Q28 48 43 42Q39 20 67 9Q62 33 80 39Q97 56 77 78Q61 95 37 84Z" fill="#ffad72" stroke="#e66d71" stroke-width="4"/>
+   <path d="M31 40L21 18Q39 20 45 37M66 31L81 14Q89 33 77 43" fill="#ffdf83" stroke="#e66d71" stroke-width="3"/>
+   <ellipse cx="41" cy="61" rx="4" ry="6" fill="#49395f"/>
+   <ellipse cx="63" cy="61" rx="4" ry="6" fill="#49395f"/>
+   <circle cx="42" cy="59" r="1.5" fill="white"/>
+   <circle cx="64" cy="59" r="1.5" fill="white"/>
+   <ellipse cx="32" cy="70" rx="6" ry="4" fill="#f28fac"/>
+   <ellipse cx="72" cy="70" rx="6" ry="4" fill="#f28fac"/>
+   <path d="M47 73Q52 78 58 73" fill="none" stroke="#49395f" stroke-width="3" stroke-linecap="round"/>
+  </svg>
+  <div>
+   <div class="kicker">BLAZBIT'S RACE CONTROL</div>
+   <h1>THE GRAND PRIX</h1>
+   <p style="margin:5px 0 0">Three laps. Two rivals. One very overconfident fire gremlin. Show Blazbit you can actually drive.</p>
+  </div>
+ </div>
+
+ <div class="briefgrid">
+  <div class="card">
+   <h3>🏎️ Race briefing</h3>
+   <div class="instruction"><span class="key">↑ / W</span><span><b>Accelerate</b> — build speed on straights.</span></div>
+   <div class="instruction"><span class="key">↓ / S</span><span><b>Brake</b> — slow down before tight corners.</span></div>
+   <div class="instruction"><span class="key">← →</span><span><b>Steer</b> — change lanes to pass rivals. A/D also work.</span></div>
+   <div class="instruction"><span class="key">SPACE</span><span><b>Boost</b> — spend limited energy on straights and overtakes.</span></div>
+   <div class="instruction"><span class="key">Q</span><span><b>Enter pit lane</b> — approach the blue PIT ENTRY marker, stay near the centre line and press Q.</span></div>
+   <div class="instruction"><span class="key">P</span><span><b>Pit stop</b> — reach BOX 07 and press P. Your car automatically stops while the crew services it for 3.4 seconds.</span></div>
+   <div class="instruction"><span class="key">1 / 2 / 3</span><span><b>Tyres</b> — select Soft, Medium or Hard with 1/2/3 before starting your service.</span></div>
+   <div class="instruction"><span class="key">ESC</span><span><b>Pause</b> — pause the race and timer.</span></div>
+  </div>
+
+  <div class="card">
+   <h3>🏆 Your objectives</h3>
+   <p style="margin:6px 0">• Complete <b>3 laps</b> before the <b>45-second timer</b> ends.<br>• Finish in <b>1st or 2nd place</b>.<br>• Complete a pit stop in <b>BOX 07</b>.<br>• Avoid track-limit penalties and preserve your tyres.</p>
+
+   <hr style="border:0;border-top:1px solid #eee5f5;margin:12px 0">
+
+   <h3>🛞 Choose your starting tyres</h3>
+   <div class="compounds" id="compoundPicker">
+    <button class="compound" data-compound="soft" onclick="chooseCompound('soft')">🔴 SOFT<small>Fast · wears quickly</small></button>
+    <button class="compound selected" data-compound="medium" onclick="chooseCompound('medium')">🟡 MEDIUM<small>Balanced · steady</small></button>
+    <button class="compound" data-compound="hard" onclick="chooseCompound('hard')">⚪ HARD<small>Durable · less grip</small></button>
+   </div>
+
+   <p class="tiny">Tip: Soft is quick but wears faster. Hard lasts longer but turns less sharply.</p>
+
+   <div class="pitkey">
+    <b>PIT PROCEDURE:</b>
+    Reach the blue PIT ENTRY marker → press Q → follow the blue lane → brake below 35 km/h at BOX 07 → choose tyres (1/2/3) - optional → press P and wait 3.4 seconds → drive through PIT EXIT. The lap counter must keep its place throughout.
+   </div>
+  </div>
+ </div>
+
+ <div class="stage">
+  <canvas id="track" class="trackcanvas" width="900" height="600" aria-label="Top-down technical racing circuit with S-bends, hairpins and a chicane"></canvas>
+
+  <div class="overlay" id="preRace">
+   <div class="modal">
+    <div class="kicker">RACE CONTROL IS WAITING</div>
+    <h2>Ready to race, {{PLAYER}}?</h2>
+    <p>The circuit has a fast back straight, a tight chicane and a technical final sector. Your rivals will not politely move out of your way. Your mandatory pit stop is part of the 45-second race: enter at the blue PIT ENTRY marker, follow the blue lane to BOX 07, brake below 35 km/h, select tyres and press P. The crew needs 3.4 seconds.</p>
+    <p><b>The clock stays OFF until you press Start.</b> A three-second light sequence follows. The 45-second race timer starts on the green light.</p>
+    <button class="btn gold" style="width:100%" onclick="startRace()">LIGHTS OUT — START ENGINE 🏁</button>
+    <p class="tiny">Use keyboard controls or the on-screen buttons below the track.</p>
+   </div>
+  </div>
+
+  <div class="overlay hidden" id="countOverlay">
+   <div class="countnum" id="countNumber">3</div>
+  </div>
+
+  <div class="overlay hidden" id="pauseOverlay">
+   <div class="modal" style="text-align:center">
+    <div class="kicker">RACE PAUSED</div>
+    <h2>Catch your breath.</h2>
+    <p>The timer is paused. Blazbit is using this opportunity to give unsolicited strategy advice.</p>
+    <button class="btn mint" onclick="resumeRace()">RESUME RACE</button>
+    <button class="btn alt" onclick="restartRace()">RESTART</button>
+   </div>
+  </div>
+ </div>
+
+ <div class="hud">
+  <div class="metric"><label>TIME LEFT</label><strong id="time">--:--</strong><em id="racePhase">Not started</em></div>
+  <div class="metric"><label>LAP</label><strong id="lap">0 / 3</strong><em>Race distance</em></div>
+  <div class="metric"><label>POSITION</label><strong id="position">P3</strong><em id="positionNote">Grid position</em></div>
+  <div class="metric"><label>SPEED</label><strong id="speed">0</strong><em>km/h · game scale</em></div>
+  <div class="metric"><label>TYRE WEAR</label><strong id="wear">0%</strong><div class="bar"><span id="wearBar"></span></div></div>
+  <div class="metric"><label>BOOST ENERGY</label><strong id="boost">100%</strong><div class="bar"><span id="boostBar"></span></div></div>
+ </div>
+
+ <div class="card" style="margin-top:10px;padding:12px 14px">
+  <div class="heading">
+   <h3 style="font-size:18px;margin:0">📡 Live race control</h3>
+   <span class="tiny">Order is recalculated from each car's live track distance</span>
+  </div>
+  <div class="standings" id="standings"></div>
+  <div class="pitkey" id="pitStatus">🅿️ Watch for the blue PIT ENTRY marker</div>
+  <div class="pittyres hidden" id="pitTyres">
+   <span class="tiny" style="align-self:center">PIT TYRES:</span>
+   <button data-pitcompound="soft" onclick="setPitCompound('soft')">1 · SOFT</button>
+   <button class="selected" data-pitcompound="medium" onclick="setPitCompound('medium')">2 · MEDIUM</button>
+   <button data-pitcompound="hard" onclick="setPitCompound('hard')">3 · HARD</button>
+  </div>
+ </div>
+
+ <div class="controls">
+  <div class="controlhint">↑/W accelerate · ↓/S brake · ←/→ or A/D steer · SPACE boost · Q pit entry · P pit stop · 1/2/3 tyres · ESC pause</div>
+  <div class="touch">
+   <button data-key="ArrowLeft">◀</button>
+   <button data-key="ArrowRight">▶</button>
+   <button class="accelerate" data-key="ArrowUp">ACCEL</button>
+   <button data-key="ArrowDown">BRAKE</button>
+   <button class="boost" data-key="Space">⚡</button>
+   <button class="pitenter" onclick="enterPit()">PIT Q</button>
+   <button class="pitbtn" onclick="pitStop()">BOX P</button>
+  </div>
+ </div>
+
+ <div class="status" id="raceMessage">Blazbit: “I've warmed up the tyres. Try not to embarrass us.”</div>
+  <div id="result" class="result">
+  <div class="resultinner">
+   <div class="emoji" id="resultEmoji">🏆</div>
+   <h2 id="resultTitle">Race complete!</h2>
+   <p id="resultText"></p>
+   <div class="creature-reveal" id="blazbitReveal"></div>
+   <button class="btn" onclick="restartRace()">RACE AGAIN</button>
+   <button class="btn alt" onclick="backToBriefing()">CHANGE TYRES</button>
+   <button class="btn gold hidden" id="floofiNextBtn" onclick="openFloofi()">NEXT CHALLENGE: FLOOFI'S CROSSWORD ✨</button>
+   <button class="btn alt" onclick="returnToWelcome()">WORLD INTRO</button>
+  </div>
+ </div>
+</section>
+
+<p class="tiny" style="text-align:center;margin-top:14px">Wonderwild · Original fantasy artwork · Not affiliated with any real racing team</p>
+</div>
+</div>
+
+
+<!-- GAME 2: FLOOFI'S F1 CROSSWORD -->
+<div id="floofiApp" class="hidden">
+ <div class="floofi-wrap">
+  <header class="top">
+   <div class="brand">✦ WONDERWILD <span style="color:#b69ce8">/</span> Floofi's CROSSWORD</div>
+   <div class="row" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <span class="tag">🧩 PUZZLE · 02</span>
+    <button class="btn alt" onclick="backToGrandPrix()">← Back to Grand Prix</button>
+   </div>
+  </header>
+
+  <section class="panel">
+   <div class="floofi-hero">
+    <div class="floofi-mascot" aria-hidden="true">☁️</div>
+    <div>
+     <div class="kicker">FLOOFI'S PADDOCK PUZZLE</div>
+     <h1>THE F1 CROSSWORD</h1>
+     <p style="margin:4px 0 0">Twenty-four answers. One very smug cloud. Absolutely no multiple-choice rescue.</p>
+    </div>
+   </div>
+
+   <div class="floofi-instructions" id="floofiBrief">
+    <h2 style="font-size:24px">Before you begin, {{PLAYER}}…</h2>
+    <p>This is a full-sized F1 crossword built around drivers, teams, circuits and racing strategy. Read the clues carefully — some are direct, and some make you work for the answer.</p>
+    <ul>
+     <li><b>There is no timer.</b> Take the time you need to solve the grid.</li>
+     <li>You have <b>3 lives</b>. Each time you submit a complete but incorrect crossword, you lose <b>one life</b>.</li>
+     <li>An incomplete grid does <b>not</b> cost a life. Fill every square before pressing Check Crossword.</li>
+     <li>When all 24 answers are correct, Floofi is unlocked. If all 3 lives are used, you can restart the puzzle.</li>
+     <li>Choose a clue to highlight its answer. Click a crossing square again to switch between Across and Down. Type one letter per square; the cursor moves along the selected answer.</li>
+     <li>Use Backspace to erase, and the arrow keys to move through the selected answer. The grid scrolls sideways on smaller screens.</li>
+    </ul>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px">
+     <button class="btn gold" onclick="startFloofi()">START THE CROSSWORD ☁️</button>
+     <span class="floofi-tag">24 INTERLOCKING ANSWERS · 3 LIVES · NO TIMER</span>
+    </div>
+   </div>
+
+   <div id="floofiPlay" class="hidden">
+    <div class="floofi-stats">
+     <div class="floofi-stat"><label>LIVES LEFT</label><strong id="floofiLives">♥ ♥ ♥</strong></div>
+     <div class="floofi-stat"><label>LETTERS FILLED</label><strong id="floofiFilled">0 / 131</strong></div>
+     <div class="floofi-stat"><label>GRID PROGRESS</label><strong id="floofiPercent">0%</strong><div class="floofi-progress"><span id="floofiProgressBar"></span></div></div>
+    </div>
+
+    <div class="floofi-board-layout">
+     <div class="floofi-grid-card">
+      <div class="row" style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+       <h3 style="margin:0">🧩 Crossword grid</h3>
+       <span class="tiny">Select a clue to begin</span>
+      </div>
+      <div class="floofi-grid-scroll"><div id="floofiGrid" class="floofi-grid" aria-label="F1 crossword grid"></div></div>
+      <div class="tiny">Tip: on a phone, swipe sideways to see the full grid.</div>
+     </div>
+
+     <div class="floofi-clues-card">
+      <div class="floofi-clue-group">
+       <h3>Across →</h3>
+       <div class="floofi-clue-list" id="floofiAcrossClues"></div>
+      </div>
+      <div class="floofi-clue-group">
+       <h3>Down ↓</h3>
+       <div class="floofi-clue-list" id="floofiDownClues"></div>
+      </div>
+     </div>
+    </div>
+
+    <div class="floofi-feedback" id="floofiFeedback" aria-live="polite">Floofi: “I hope you brought your brain. I brought fluff.”</div>
+    <div class="floofi-actions">
+     <button class="btn gold" id="floofiCheckBtn" onclick="checkFloofiCrossword()">CHECK CROSSWORD ✓</button>
+     <button class="btn alt" onclick="restartFloofi()">RESTART PUZZLE</button>
+     <button class="btn alt" onclick="backToGrandPrix()">BACK TO GRAND PRIX</button>
+    </div>
+
+    <div id="floofiResult" class="floofi-result">
+     <div class="floofi-result-inner">
+      <div class="floofi-result-emoji" id="floofiResultEmoji">☁️</div>
+      <h2 id="floofiResultTitle">Floofi unlocked!</h2>
+      <p id="floofiResultText"></p>
+      <div class="creature-reveal" id="floofiReveal"></div>
+      <button class="btn gold" id="floofiRetryBtn" onclick="restartFloofi()">TRY AGAIN</button>
+      <button class="btn gold hidden" id="floofiNextBtnGame3" onclick="openPuffwing()">NEXT CHALLENGE: PUFFWING'S BUILD BATTLE 🪽</button>
+      <button class="btn alt" onclick="backToGrandPrix()">RETURN TO GRAND PRIX</button>
+     </div>
+    </div>
+   </div>
+  </section>
+  <p class="tiny" style="text-align:center;margin-top:14px">Wonderwild · Floofi's F1 Crossword · No timer, just brainpower</p>
+ </div>
+</div>
+
+
+<!-- GAME 3: PUFFWING'S BUILD BATTLE -->
+<div id="puffwingApp" class="hidden">
+ <div class="build-wrap">
+  <header class="top">
+   <div class="brand">✦ WONDERWILD <span style="color:#b69ce8">/</span> Puffwing's BUILD BATTLE</div>
+   <div class="row" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <span class="tag">🏗️ PUZZLE · 03</span>
+    <button class="btn alt" onclick="backToFloofi()">← Back to Floofi</button>
+   </div>
+  </header>
+  <section class="panel">
+   <div class="build-hero">
+    <div class="build-mascot">🪽</div>
+    <div><div class="kicker">PUFFWING'S STORMPROOF CHALLENGE</div><h1>THE BUILD BATTLE</h1><p style="margin:4px 0 0">A fort is only as good as the way it holds together. Build smart, not just big.</p></div>
+   </div>
+   <div class="build-instructions" id="puffBrief">
+    <h2 style="font-size:25px">Build a stormproof skybase, {{PLAYER}}.</h2>
+    <p>Your skybase must survive a storm inspection. This is a spatial construction challenge: the inspector checks the actual positions and connections of your pieces, not just how many you placed. The 7×7 plot is labelled by row and column (for example, 3.4 means row 3, column 4).</p>
+    <ol>
+     <li><b>Foundation:</b> make exactly nine floor tiles in one complete, connected 3×3 square. You may place it anywhere on the plot; a central position leaves room for the ramp.</li>
+     <li><b>Walls and entrance:</b> the eight outer squares of that 3×3 foundation must contain exactly seven walls and one door. The centre square must remain an open floor. The door must replace one outer wall; it cannot be placed outside the foundation.</li>
+     <li><b>Roof:</b> add a roof piece to every one of the nine foundation squares, including the centre. A roof floating outside the foundation will fail inspection.</li>
+     <li><b>Access ramp:</b> place exactly one ramp on a grass square directly beside the door (up, down, left or right — diagonal contact does not count). The ramp must be outside the foundation and point towards the doorway.</li>
+     <li><b>Material budget:</b> you start with 32 wood and 18 stone. The required build costs 29 wood and 17 stone: floors 9W; seven walls 7W/7S; door 2W/1S; roof 9W/9S; ramp 2W. You have only a small spare supply, so plan your placements.</li>
+     <li><b>Tools:</b> choose a tool, then tap a plot square. Tap the same placed piece again to remove just that piece. The Eraser clears every piece on that square and refunds the materials. Walls, doors and roofs need a floor underneath.</li>
+     <li><b>Inspection:</b> press CHECK STRUCTURE whenever you like. A failed check costs no materials or lives, but the storm clock keeps running. The inspector tells you what is wrong. You must fix it before time reaches zero.</li>
+     <li><b>Storm:</b> you have <b>2 minutes 15 seconds</b>. The clock starts only after Start and a three-second countdown. There is no pause and no multiple-choice shortcut.</li>
+    </ol>
+    <div class="build-actions"><button class="btn gold" onclick="startPuffwingBuild()">START BUILDING 🏗️</button><span class="floofi-tag">7×7 GRID · 02:15 · 29 WOOD / 17 STONE REQUIRED</span></div>
+   </div>
+   <div id="puffPlay" class="hidden">
+    <div class="build-hud">
+     <div class="metric"><label>STORM TIMER</label><strong id="puffTime">02:15</strong><em id="puffPhase">Construction phase</em></div>
+     <div class="metric"><label>WOOD</label><strong id="puffWood">32</strong><em>Building supply</em></div>
+     <div class="metric"><label>STONE</label><strong id="puffStone">18</strong><em>Building supply</em></div>
+    </div>
+    <div class="metric" style="margin-bottom:12px"><label>STORM APPROACH</label><div class="build-storm"><span id="puffStormBar"></span></div></div>
+    <div class="build-layout">
+     <div class="build-board-card">
+      <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:9px"><h3 style="margin:0">🧱 Construction plot</h3><span class="tiny">Tap a square to place the selected piece</span></div>
+      <div id="puffGrid" class="build-grid" aria-label="7 by 7 building grid"></div>
+      <div class="tiny" style="margin-top:9px">Multiple layers can occupy a foundation tile: floor below, wall/door at the edge and roof above.</div>
+     </div>
+    
+<div class="build-tools-card">
+ <h3 style="margin:0">🛠️ Building tools</h3>
+
+ <p class="tiny" style="margin:5px 0">
+  Select a tool, then tap the grid. Tap a placed piece again to remove it.
+ </p>
+
+ <details class="build-reference" open>
+  <summary>📋 BUILD INSTRUCTIONS — OPEN WHILE BUILDING</summary>
+
+  <ol>
+   <li><b>UNDERSTAND THE PLOT:</b> You have a 7 × 7 grid. Each square is labelled ROW.COLUMN. For example, 3.4 means row 3, column 4.</li>
+
+   <li><b>FOUNDATION:</b> Place exactly NINE FLOOR pieces in one complete, connected 3 × 3 square. Not an L-shape, not a rectangle, and not nine scattered tiles. The centre tile is included.</li>
+
+   <li><b>WALLS AND ENTRANCE:</b> The eight outer squares must contain exactly SEVEN WALLS and ONE DOOR. The centre square must remain free of walls and doors. The door replaces one outer wall.</li>
+
+   <li><b>ROOF:</b> Place exactly NINE ROOF pieces, one above every foundation tile, including the centre. No floating roofs outside the foundation.</li>
+
+   <li><b>ACCESS RAMP:</b> Place exactly ONE ramp on an empty grass square outside the foundation. It must touch the doorway directly: north, south, east or west. Diagonal contact does not count. It cannot overlap a floor.</li>
+
+   <li><b>MATERIAL BUDGET:</b> You start with 32 WOOD and 18 STONE. Your exact spending is:
+    <ul>
+     <li>9 floors = 9 wood</li>
+     <li>7 walls = 7 wood + 7 stone</li>
+     <li>1 door = 2 wood + 1 stone</li>
+     <li>9 roofs = 9 wood + 9 stone</li>
+     <li>1 ramp = 2 wood</li>
+    </ul>
+    You should finish with 3 wood and 1 stone. Do not waste them.
+   </li>
+
+   <li><b>TOOLS:</b> Select a tool before tapping a grid square. FLOOR creates the foundation. WALL and DOOR create the enclosure. ROOF covers the foundation. RAMP creates the entrance. ERASER removes all pieces on a square and refunds their materials. Walls, doors and roofs require a floor underneath.</li>
+
+   <li><b>INSPECTION:</b> Press CHECK STRUCTURE whenever you like. Failed inspections do not deduct materials or lives. Read the feedback and correct your mistakes. The storm clock does not stop.</li>
+
+   <li><b>STORM TIMER:</b> You have exactly 2 MINUTES AND 15 SECONDS. The timer starts after the three-second countdown. There is no pause button.</li>
+
+   <li><b>FINAL CHECKLIST:</b>
+    <ul>
+     <li>Exactly 9 connected floors in a 3 × 3 square.</li>
+     <li>Exactly 7 walls around the outer edge.</li>
+     <li>Exactly 1 door replacing an outer wall.</li>
+     <li>Exactly 9 roofs covering the foundation.</li>
+     <li>Exactly 1 external ramp touching the doorway.</li>
+     <li>No unsupported walls, doors or roofs.</li>
+    </ul>
+    Every requirement must be satisfied. Almost structurally sound is still structurally unsound.
+   </li>
+  </ol>
+
+  <p><b>Puffwing's final warning:</b> "I have wings. I understand gravity better than you do. Please do not make me explain what a 3 × 3 square is twice."</p>
+ </details>
+
+ <div class="build-toolbar" id="puffToolbar">
+  <button class="build-tool active" data-tool="floor" onclick="selectPuffTool('floor')">🟫 FLOOR<small>1 wood</small></button>
+  <button class="build-tool" data-tool="wall" onclick="selectPuffTool('wall')">🧱 WALL<small>1 wood + 1 stone</small></button>
+  <button class="build-tool" data-tool="door" onclick="selectPuffTool('door')">🚪 DOOR<small>2 wood + 1 stone</small></button>
+  <button class="build-tool" data-tool="roof" onclick="selectPuffTool('roof')">🏠 ROOF<small>1 wood + 1 stone</small></button>
+  <button class="build-tool" data-tool="ramp" onclick="selectPuffTool('ramp')">↗ RAMP<small>2 wood</small></button>
+  <button class="build-tool" data-tool="erase" onclick="selectPuffTool('erase')">🧹 ERASER<small>Recover materials</small></button>
+ </div>
+
+ <div class="build-resources">
+  <div class="build-resource">
+   <label>WOOD LEFT</label>
+   <strong id="puffWoodSide">32</strong>
+  </div>
+  <div class="build-resource">
+   <label>STONE LEFT</label>
+   <strong id="puffStoneSide">18</strong>
+  </div>
+ </div>
+
+ <div class="tiny">
+  Build the floor first. Walls, doors and roofs need a floor underneath.
+  The ramp must be outside and touch the doorway.
+ </div>
+
+ <div class="build-actions">
+  <button class="btn mint" onclick="checkPuffBuild()">CHECK STRUCTURE ✓</button>
+  <button class="btn alt" onclick="resetPuffBuild()">RESET PLOT</button>
+ </div>
+</div>
+</div>
+    <div class="build-feedback" id="puffFeedback" aria-live="polite">Puffwing: “Please build something that doesn't fall over. I have wings; I don't need a roof collapsing on me.”</div>
+    <div id="puffBuildResult" class="build-result"><div class="build-result-inner"><div class="build-result-emoji" id="puffBuildEmoji">🪽</div><h2 id="puffBuildTitle">Puffwing unlocked!</h2><p id="puffBuildText"></p><div class="creature-reveal" id="puffwingReveal"></div><button class="btn gold hidden" id="puffNextArenaBtn" onclick="openArena()">NEXT CHALLENGE: STARFALL ARENA ⚔️</button><button class="btn alt" onclick="backToFloofi()">BACK TO CROSSWORD</button><button class="btn alt" onclick="resetPuffBuild()">BUILD AGAIN</button></div></div>
+   </div>
+  </section>
+  <p class="tiny" style="text-align:center;margin-top:14px">Wonderwild · Puffwing's Build Battle · Design, connect, reinforce</p>
+ </div>
+ <div id="puffCountdownOverlay" class="build-overlay hidden"><div class="build-count" id="puffCount">3</div></div>
+</div>
+
+<!-- GAME 4: CREATURE CLASH — STARFALL ARENA -->
+<div id="arenaApp" class="hidden">
+ <div class="arena-wrap">
+  <header class="top">
+   <div class="brand">✦ WONDERWILD <span style="color:#b69ce8">/</span> STARFALL ARENA</div>
+   <div class="row" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="tag">⚔️ PUZZLE · 04</span><button class="btn alt" onclick="backToPuffwing()">← Back to Build Battle</button></div>
+  </header>
+  <section class="panel arena-panel">
+   <div class="arena-topline"><div><div class="kicker">THE LAST GATEKEEPER</div><h1>CREATURE CLASH</h1><p style="margin:4px 0 0">One final duel stands between you and the hidden island.</p></div><span class="arena-tag">ANIME-INSPIRED CREATURE DUEL · TURN-BASED</span></div>
+   <div id="arenaSelect">
+    <div class="arena-brief"><h2 style="font-size:25px">Before you enter the arena…</h2><p>This is a turn-based duel, not a reflex test. There is <b>no timer</b>. You choose one action, Vexori responds, and then your next turn begins. You must defeat both of Vexori's forms in the same battle.</p>
+     <div class="arena-rules-grid">
+      <div class="arena-rule"><b>⚡ QUICK STRIKE</b><span>Deals 15–23 damage depending on your fighter and restores 20 energy. Use it to build energy.</span></div>
+      <div class="arena-rule"><b>✨ SIGNATURE MOVE</b><span>Costs 40 energy and deals heavy damage. Each creature's signature has its own special effect.</span></div>
+      <div class="arena-rule"><b>🛡️ GUARD</b><span>Restores 24 energy and reduces the next incoming attack by 65%. A guard stays ready if Vexori only charges and does not attack yet.</span></div>
+      <div class="arena-rule"><b>💗 RECOVER</b><span>One use per battle. Restores up to 30 HP. Save it for a dangerous moment, not the first scratch.</span></div>
+     </div>
+     <h3 style="font-size:18px;margin-top:14px">Read Vexori's tells</h3>
+     <ul class="arena-rules-list">
+      <li><b>WATCHING:</b> Vexori may use Shadow Claw. Expect a regular hit.</li>
+      <li><b>CHARGING:</b> the next strike is a heavy Eclipse Break. Use GUARD on your next turn before it lands. Attacking instead leaves you exposed.</li>
+      <li><b>Phase 1:</b> defeat the Void Warden form (112 HP). Vexori then awakens in a second form (96 HP). Your bond restores 22 HP and 25 energy at the transition, but the new form immediately begins charging.</li>
+      <li><b>Phase 2:</b> Vexori becomes more dangerous and may set up one extra charged strike below half health. Watch the state label every turn.</li>
+     </ul>
+    </div>
+    <div class="arena-brief"><h2 style="font-size:25px">Choose your fighter.</h2><p>Pick one of your earned creatures. Each has a different health total and signature effect. Choose based on the way you want to fight.</p></div>
+    <div class="arena-fighter-picker">
+     <button class="arena-fighter selected" data-fighter="Blazbit" onclick="selectArenaFighter('Blazbit')"><span class="fighter-emoji">🔥</span><span><b>Blazbit</b><small>Fire gremlin · high damage + scorch</small></span></button>
+     <button class="arena-fighter" data-fighter="Floofi" onclick="selectArenaFighter('Floofi')"><span class="fighter-emoji">☁️</span><span><b>Floofi</b><small>Dream cloud · damage + recovery</small></span></button>
+     <button class="arena-fighter" data-fighter="Puffwing" onclick="selectArenaFighter('Puffwing')"><span class="fighter-emoji">🪽</span><span><b>Puffwing</b><small>Sky spirit · damage + evasive guard</small></span></button>
+    </div>
+    <div class="arena-status" id="arenaFighterNote">Blazbit is ready to bring the heat. Literally.</div>
+    <button class="btn gold" onclick="startArenaBattle()">ENTER THE STARFALL ARENA ⚔️</button>
+   </div>
+   <div id="arenaBattle" class="hidden">
+    <div class="arena-status" id="arenaPhaseLabel">PHASE 1 · THE VOID WARDEN</div>
+    <div class="arena-stage">
+     <div class="arena-combatant" id="arenaPlayerCard"><div class="combatant-emoji" id="arenaPlayerEmoji">🔥</div><h3 id="arenaPlayerName">Blazbit</h3><div class="arena-hp-label"><span>HP</span><span id="arenaPlayerHpText">125 / 125</span></div><div class="arena-hp"><span id="arenaPlayerHpBar"></span></div><div class="arena-hp-label"><span>ENERGY</span><span id="arenaPlayerEnergyText">25 / 100</span></div><div class="arena-energy"><span id="arenaPlayerEnergyBar"></span></div></div>
+     <div class="arena-vs">VS</div>
+     <div class="arena-combatant enemy"><div class="combatant-emoji" id="arenaEnemyEmoji">🌑🐉</div><h3 id="arenaEnemyName">VEXORI</h3><div class="arena-hp-label"><span>HP</span><span id="arenaEnemyHpText">110 / 110</span></div><div class="arena-hp"><span id="arenaEnemyHpBar"></span></div><div class="arena-hp-label"><span>STATE</span><span id="arenaEnemyState">WATCHING</span></div><div class="arena-energy"><span id="arenaEnemyEnergyBar" style="width:30%"></span></div></div>
+    </div>
+    <div class="arena-log" id="arenaLog" aria-live="polite">Vexori descends from the starfall gate. The arena goes quiet.</div>
+    <div class="arena-actions">
+     <button class="arena-action" id="arenaQuickBtn" onclick="useArenaMove('quick')">⚡ QUICK STRIKE<small>Reliable damage · builds energy</small></button>
+     <button class="arena-action" id="arenaSpecialBtn" onclick="useArenaMove('special')">✨ SIGNATURE MOVE<small id="arenaSpecialText">Costs 40 energy · heavy damage</small></button>
+     <button class="arena-action" id="arenaGuardBtn" onclick="useArenaMove('guard')">🛡️ GUARD<small>Reduce the next hit · restore energy</small></button>
+     <button class="arena-action" id="arenaHealBtn" onclick="useArenaMove('heal')">💗 RECOVER<small>Once per battle · restore up to 30 HP</small></button>
+    </div>
+    <div class="arena-status" id="arenaBattleHint">Watch for Vexori's charge warning. Guard before the impact.</div>
+   </div>
+   <div id="arenaResult" class="arena-result">
+    <div class="arena-result-emoji" id="arenaResultEmoji">🏆</div><h2 id="arenaResultTitle">Victory!</h2><p id="arenaResultText"></p>
+    <div class="creature-reveal" id="lunariReveal"></div>
+    <button class="btn gold" id="arenaRetryBtn" onclick="retryArena()">FIGHT AGAIN</button>
+    <button class="btn alt" onclick="backToPuffwing()">BACK TO BUILD BATTLE</button>
+   </div>
+   <div id="arenaMapReveal" class="arena-map-reveal">
+    <div class="kicker">THE SEAL HAS BROKEN</div><h2>CHOCOBLOOM ISLAND IS UNLOCKED!</h2><p>The starfall gate opens and the island map appears. Somewhere on the island, the final guardian is waiting. The map is yours — but finding the guardian will take more than a straight line. The next expedition will unlock the island routes and clue trail.</p>
+    <div class="arena-map-art" aria-label="A stylised island map revealed beyond the arena"></div>
+    <div style="text-align:center;margin-top:12px"><button class="btn gold" onclick="openChocobloomMap()">OPEN CHOCOBLOOM ISLAND MAP 🗺️</button></div>
+    <b>Next expedition: the treasure hunt.</b><p style="margin:5px 0 0">Expect compass directions, route logic, number patterns, arithmetic and clues that connect across the island. The final creature will only appear when the trail is solved.</p>
+   </div>
+  </section>
+  <p class="tiny" style="text-align:center;margin-top:14px">Wonderwild · Starfall Arena · Original creature designs and battle system</p>
+ </div>
+</div>
+
+
+<!-- CHOCOBLOOM ISLAND — THE OPEN MAP -->
+<div id="islandApp" class="hidden">
+ <div class="island-wrap">
+    <header class="top"><div class="brand">✦ WONDERWILD <span style="color:#b69ce8">/</span> CHOCOBLOOM ISLAND</div><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="tag">🗺️ EXPEDITION MAP</span><button class="btn alt" onclick="backToArena()">← Starfall Arena</button></div></header>
+  <section class="island-panel">
+   <div class="island-hero"><div class="island-emblem">🍫</div><div><div class="kicker">THE GATE IS OPEN</div><h1>Welcome to Chocobloom Island</h1><p style="margin:4px 0 0">A little island with a suspicious amount of chocolate, a few very nosy animals, and a treasure trail that does not solve itself.</p></div></div>
+   <div class="island-map-frame" role="group" aria-label="Interactive map of Chocobloom Island">
+    <svg class="island-map-svg" viewBox="0 0 1000 625" preserveAspectRatio="none" aria-hidden="true">
+     <defs>
+      <linearGradient id="seaGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a8e4e5"/><stop offset="1" stop-color="#58afc1"/></linearGradient>
+      <linearGradient id="landGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8f0bd"/><stop offset=".52" stop-color="#9ed9a7"/><stop offset="1" stop-color="#71bd9c"/></linearGradient>
+      <linearGradient id="chocoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b98568"/><stop offset="1" stop-color="#815342"/></linearGradient>
+      <filter id="islandShadow"><feGaussianBlur stdDeviation="17"/></filter>
+     </defs>
+     <rect width="1000" height="625" fill="url(#seaGrad)"/>
+     <g fill="none" stroke="#e7ffff" stroke-width="3" opacity=".34"><path d="M0 120Q120 90 245 125T500 115T760 120T1000 110"/><path d="M0 480Q120 450 245 485T500 475T760 480T1000 470"/><path d="M40 300Q160 270 280 305T520 295T760 300T980 290"/></g>
+     <path d="M166 331C166 230 250 104 412 76C567 49 752 128 828 246C914 380 814 528 660 555C488 591 270 531 190 436C163 405 151 367 166 331Z" fill="#3e8c83" opacity=".26" filter="url(#islandShadow)"/>
+     <path d="M145 319C155 208 262 101 411 81C556 61 730 121 817 239C906 360 827 500 680 543C523 589 304 546 199 446C160 409 137 365 145 319Z" fill="url(#landGrad)" stroke="#f2f5cc" stroke-width="12"/>
+     <path d="M215 286C226 205 312 130 405 126C483 122 546 161 547 225C549 280 480 317 412 323C321 331 249 329 215 286Z" fill="#f2c9a1" opacity=".75" stroke="#fff2d8" stroke-width="5"/>
+     <path d="M440 112C548 91 682 137 737 218C781 285 734 342 667 348C599 355 534 323 509 270C488 226 464 178 440 112Z" fill="#b4dca0" stroke="#f0f2d1" stroke-width="5"/>
+     <path d="M288 352C359 301 477 327 529 397C571 454 537 511 458 518C372 527 277 468 263 411C257 389 267 367 288 352Z" fill="#83c995" stroke="#f0f2d1" stroke-width="5"/>
+     <path d="M558 365C624 310 746 336 781 407C808 463 745 509 681 501C617 492 550 427 558 365Z" fill="#efcb91" stroke="#fff0d5" stroke-width="5"/>
+     <path d="M170 366C242 380 278 431 315 486" fill="none" stroke="#f7e8c3" stroke-width="17" stroke-linecap="round"/>
+     <path d="M315 486C372 425 428 373 505 335S653 253 720 265" fill="none" stroke="#f7e8c3" stroke-width="14" stroke-linecap="round" stroke-dasharray="3 2"/>
+     <path d="M505 335C522 402 584 443 680 465" fill="none" stroke="#f7e8c3" stroke-width="12" stroke-linecap="round" stroke-dasharray="3 2"/>
+     <g fill="#438c64" opacity=".85"><circle cx="367" cy="172" r="17"/><circle cx="397" cy="189" r="22"/><circle cx="428" cy="166" r="16"/><circle cx="459" cy="191" r="21"/><circle cx="614" cy="182" r="19"/><circle cx="648" cy="203" r="23"/><circle cx="682" cy="184" r="18"/><circle cx="344" cy="413" r="18"/><circle cx="376" cy="441" r="23"/><circle cx="420" cy="420" r="19"/><circle cx="725" cy="420" r="16"/></g>
+     <g fill="#fff7d9" opacity=".88"><path d="M244 237l10-18 10 18-10 18z"/><path d="M753 293l10-18 10 18-10 18z"/><path d="M480 475l9-16 9 16-9 16z"/></g>
+     <g font-family="Times New Roman" font-size="19" font-weight="900" fill="#547a64" opacity=".8"><text x="178" y="558">CHOCOBLOOM BAY</text><text x="750" y="555">SOUTHERN SHORE</text></g>
+     <g fill="#f6e4b0" stroke="#fff8e2" stroke-width="4"><path d="M90 290l25-18 19 30-27 19z"/><path d="M870 128l22-14 19 23-25 19z"/><path d="M850 490l22-16 19 27-24 15z"/></g>
+    </svg>
+    <button class="island-pin active" id="islandPin0" style="left:29%;top:31%" onclick="openTreasureStation(0)"><span>🍦</span>SCOOP DISTRICT</button>
+    <button class="island-pin locked" id="islandPin1" style="left:51%;top:19%" onclick="openTreasureStation(1)"><span>🐾</span>CATTO-DOGGO</button>
+    <button class="island-pin locked" id="islandPin2" style="left:53%;top:57%" onclick="openTreasureStation(2)"><span>🍄</span>MYSTERY FOREST</button>
+    <button class="island-pin locked" id="islandPin3" style="left:77%;top:31%" onclick="openTreasureStation(3)"><span>🌅</span>SUNRISE POINT</button>
+    <button class="island-pin locked" id="islandPin4" style="left:77%;top:73%" onclick="openTreasureStation(4)"><span>🏆</span>WINNING GROUNDS</button>
+    <div style="position:absolute;left:10%;top:69%;z-index:2;color:#fff;font:900 11px Times New Roman;text-shadow:0 2px 4px #26717b">⚓ CHOCO HARBOR</div>
+    <div style="position:absolute;right:3%;top:5%;z-index:2;color:#fff;font:900 11px Times New Roman;text-shadow:0 2px 4px #26717b">N ↑</div>
+   </div>
+   <div class="island-map-caption"><span>Follow the dotted trail from Scoop District to Winning Grounds.</span><div class="island-legend"><span><i class="island-dot"></i>Current</span><span><i class="island-dot done"></i>Cleared</span><span><i class="island-dot locked"></i>Locked</span></div></div>
+   <div class="island-map-lower">
+    <div class="island-card"><h3>🧭 Expedition status</h3><p id="islandMapStatus">Your first clue is waiting in Scoop District. Tap the glowing pin to begin.</p><div class="island-progress"><span id="islandProgressBar"></span></div><div class="tiny" id="islandProgressText">0 / 5 trail seals recovered</div><div class="island-status" id="islandMapFeedback" aria-live="polite">The map is open. The treasure trail is still sealed.</div></div>
+    <div class="island-card"><h3>📜 Before you set off</h3><p>There are five linked stops. Each correct solution reveals the next location. The final lock combines information gathered along the route.</p><p><b>No timer.</b> You have five trail lives and three hints for the entire hunt. A wrong completed answer costs one life. An empty answer costs nothing.</p><button class="btn gold" onclick="openTreasureStation(islandProgress)" id="islandStartBtn">START THE TREASURE HUNT 🗺️</button><div class="island-treasure-callout" id="islandChestCallout" hidden><b>✨ The final chest is open!</b><p style="margin:5px 0">Cocoheart, the secret guardian, has been found. Every Animo is yours!</p><div class="creature-reveal" id="cocoheartReveal"></div><button class="btn gold" onclick="openVictory()">CELEBRATE YOUR WIN! 🎉</button></div></div>
+   </div>
+   <div class="treasure-actions"><button class="btn alt" onclick="backToArena()">← Return to Starfall Arena</button><button class="btn gold" onclick="openVictory()" id="islandLetterBtn" hidden>VIEW YOUR VICTORY 🎉</button></div>
+  </section>
+     <section class="collection-panel" aria-label="Your Animo collection">
+      <div class="collection-heading"><div><div class="kicker">YOUR LITTLE CREATURE CREW</div><h2>ANIMO COLLECTION</h2></div><span class="tiny" id="collectionCount">0 / 5 collected</span></div>
+      <div class="collection-grid" id="collectionGrid"></div>
+     </section>
+ </div>
+</div>
+
+<!-- TREASURE HUNT — FIVE LOGIC STOPS -->
+<div id="treasureApp" class="hidden">
+ <div class="treasure-wrap">
+  <header class="top"><div class="brand">✦ WONDERWILD <span style="color:#b69ce8">/</span> THE TREASURE TRAIL</div><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="tag">🧩 LOGIC EXPEDITION</span><button class="btn alt" onclick="openChocobloomMap()">← Island map</button></div></header>
+  <section class="treasure-panel">
+   <div class="treasure-heading"><div class="treasure-icon" id="treasureStageEmoji">🍦</div><div><div class="kicker" id="treasureStageKicker">STOP 1 OF 5 · SCOOP DISTRICT</div><h1 id="treasureStageTitle">The Choco Bite Split</h1><p style="margin:4px 0 0">Read the whole clue. Work it out. Type your answer — no multiple choice.</p></div></div>
+   <div class="treasure-hud"><div class="treasure-stat"><label>TRAIL LIVES</label><strong id="treasureLives">♥ ♥ ♥ ♥ ♥</strong></div><div class="treasure-stat"><label>HINTS LEFT</label><strong id="treasureHints">3</strong></div><div class="treasure-stat"><label>SEALS FOUND</label><strong id="treasureSeals">0 / 5</strong></div></div>
+   <div class="treasure-clue"><div class="kicker" id="treasureLocation">SCOOP DISTRICT</div><h2 id="treasureQuestionTitle">A little chocolate arithmetic</h2><div class="treasure-question" id="treasureQuestion"></div><div class="treasure-route-note" id="treasureMethodNote">Write only the final answer in the box. You can show your working on paper.</div><div class="treasure-hint" id="treasureHint"></div></div>
+   <div class="treasure-answer-row"><input id="treasureAnswer" type="text" maxlength="30" autocomplete="off" spellcheck="false" placeholder="Type your answer here…" aria-label="Treasure hunt answer"><button class="btn gold" onclick="submitTreasureAnswer()">SUBMIT ANSWER ✨</button></div>
+   <div class="treasure-feedback" id="treasureFeedback" aria-live="polite">Cookie is watching. Cookie is judging. Cookie is not helping. 🐈</div>
+   <div class="treasure-actions"><button class="btn alt" id="treasureHintBtn" onclick="useTreasureHint()">USE A HINT</button><button class="btn alt" onclick="openChocobloomMap()">BACK TO MAP</button><button class="btn alt" id="treasureResetBtn" onclick="resetTreasureHunt()" hidden>RESET THE HUNT</button></div>
+  </section>
+ </div>
+</div>
+
+<!-- WONDERWILD VICTORY -->
+<div id="victoryApp" class="hidden">
+ <div class="letter-wrap">
+  <header class="top"><div class="brand">✦ WONDERWILD <span style="color:#b69ce8">/</span> THE GRAND FINALE</div><span class="tag">🏆 CHALLENGE COMPLETE</span></header>
+  <section class="letter-panel" style="text-align:center">
+   <div style="font-size:64px;margin:8px 0">🎉🏆✨</div>
+   <div class="kicker">THE WHOLE ISLAND IS CELEBRATING</div>
+   <h1 class="letter-title" style="color:#9b70c7">CONGRATULATIONS, <span id="victoryPlayerName">ADVENTURER</span>!</h1>
+   <p class="letter-intro" style="font-size:18px;font-weight:900">YOU COMPLETED THE CHALLENGE AND COLLECTED ALL THE ANIIMOSSS!</p>
+   <div class="creature-reveal show" style="margin:20px auto">🌟🔥☁️🪽🌙💗</div>
+   <p class="letter-intro">Blazbit, Floofi, Puffwing, Lunari and Cocoheart are all part of your collection. What an adventure!</p>
+   <button class="btn gold" onclick="openChocobloomMap()">BACK TO YOUR ISLAND 🗺️</button>
+   <button class="btn alt" style="margin-left:7px" onclick="changePlayer()">CHANGE PLAYER</button>
+  </section>
+ </div>
+</div>
+
+<script>
+'use strict';
+
+// Each entered player name gets an independent local save namespace.
+let wonderwildPlayerName = '';
+let wonderwildProfileKey = '';
+const wwOriginalGet = Storage.prototype.getItem;
+const wwOriginalSet = Storage.prototype.setItem;
+const wwOriginalRemove = Storage.prototype.removeItem;
+function wwScopedKey(key){return String(key).startsWith('cw') && wonderwildProfileKey ? 'ww_profile_'+wonderwildProfileKey+'::'+key : key;}
+Storage.prototype.getItem=function(key){return wwOriginalGet.call(this,wwScopedKey(key));};
+Storage.prototype.setItem=function(key,value){return wwOriginalSet.call(this,wwScopedKey(key),value);};
+Storage.prototype.removeItem=function(key){return wwOriginalRemove.call(this,wwScopedKey(key));};
+function wwSlug(name){return name.trim().toLocaleLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g).slice(0,48)||'adventurer';}
+function wwSetPlayer(name){wonderwildPlayerName=name.trim().slice(0,24);wonderwildProfileKey=wwSlug(wonderwildPlayerName);wwOriginalSet.call(localStorage,'ww_active_player_name',wonderwildPlayerName);wwOriginalSet.call(localStorage,'ww_active_player_key',wonderwildProfileKey);}
+function playerText(value){return String(value).replaceAll('{{PLAYER}}',wonderwildPlayerName||'Adventurer');}
+function personalizeStaticText(){const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode())){if(node.__wwTemplate===undefined && node.nodeValue.includes('{{PLAYER}}'))node.__wwTemplate=node.nodeValue;if(node.__wwTemplate!==undefined)node.nodeValue=playerText(node.__wwTemplate);}}
+function changePlayer(){hideAllScreens();document.getElementById('welcomeScreen').classList.remove('hidden');document.getElementById('playerNameInput').value='';document.getElementById('playerNameInput').focus();window.scrollTo(0,0);}
+
+const CREATURES={
+ Blazbit:{emoji:'🔥',tone:'#ffad72',deep:'#e66d71',name:'Blazbit',kind:'Fire gremlin',shape:'M50 8 C30 8 18 26 20 48 C9 61 20 86 43 89 C65 94 84 77 80 55 C91 34 72 9 50 8Z',ears:'<path d="M27 28L17 8L39 20M65 20L84 7L76 32" fill="#ffdf83" stroke="#e66d71" stroke-width="3" stroke-linejoin="round"/>'},
+ Floofi:{emoji:'☁️',tone:'#c9eaff',deep:'#8db8e8',name:'Floofi',kind:'Cloud puff',shape:'M18 61 C5 50 13 31 31 31 C34 12 59 8 68 28 C91 24 96 52 79 62 C83 81 63 91 48 82 C28 93 11 81 18 61Z',ears:'<path d="M28 34Q17 12 39 18L44 34M62 30Q69 9 84 21L74 39" fill="#e9f7ff" stroke="#8db8e8" stroke-width="3"/>'},
+ Puffwing:{emoji:'🪽',tone:'#d8d2ff',deep:'#9a83d7',name:'Puffwing',kind:'Skybase architect',shape:'M50 16 C27 11 13 31 19 52 C7 70 25 91 47 83 C64 94 88 78 79 58 C90 34 69 12 50 16Z',ears:'<path d="M23 48Q2 18 8 8Q31 15 39 39M63 38Q77 10 94 12Q91 37 76 52" fill="#f2efff" stroke="#9a83d7" stroke-width="3"/>'},
+ Lunari:{emoji:'🌙',tone:'#b9d9ff',deep:'#7189d6',name:'Lunari',kind:'Starfall guardian',shape:'M50 9 C26 10 12 31 19 55 C25 78 51 91 72 77 C47 78 35 52 44 31 C47 21 56 13 67 11 C61 9 55 8 50 9Z',ears:'<path d="M29 29L17 14L39 19M62 22L78 9L73 32" fill="#e4eaff" stroke="#7189d6" stroke-width="3"/>'},
+ Cocoheart:{emoji:'💗',tone:'#ffc2d9',deep:'#df82ac',name:'Cocoheart',kind:'Secret island guardian',shape:'M50 84 C40 73 13 57 15 35 C17 14 42 10 50 29 C59 10 84 14 86 35 C88 57 61 73 50 84Z',ears:'<path d="M25 29Q15 5 37 14L43 31M59 31Q67 6 84 17L75 37" fill="#ffe3ef" stroke="#df82ac" stroke-width="3"/>'}
+};
+function creatureArt(name,locked=false){
+ const c=CREATURES[name];if(!c)return '';
+ const fill=locked?'#d7d1df':c.tone,stroke=locked?'#aaa1b4':c.deep;
+ return `<svg class="creature-art" viewBox="0 0 100 100" role="img" aria-label="${locked?'Locked creature':c.name}"><defs><linearGradient id="g${name}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${fill}"/><stop offset="1" stop-color="${stroke}"/></linearGradient></defs><circle cx="50" cy="51" r="46" fill="#fff" opacity=".55"/><g>${c.ears}</g><path d="${c.shape}" fill="url(#g${name})" stroke="${stroke}" stroke-width="3"/><ellipse cx="39" cy="51" rx="3.5" ry="5" fill="#49395f"/><ellipse cx="61" cy="51" rx="3.5" ry="5" fill="#49395f"/><circle cx="40" cy="49" r="1.2" fill="#fff"/><circle cx="62" cy="49" r="1.2" fill="#fff"/><ellipse cx="27" cy="62" rx="6" ry="3.5" fill="#f28fac" opacity=".8"/><ellipse cx="73" cy="62" rx="6" ry="3.5" fill="#f28fac" opacity=".8"/><path d="M44 65Q50 71 56 65" fill="none" stroke="#49395f" stroke-width="2.7" stroke-linecap="round"/>${locked?'<path d="M38 42V36a12 12 0 0 1 24 0v6" fill="none" stroke="#756b80" stroke-width="5"/><rect x="34" y="40" width="32" height="25" rx="5" fill="#8f8798"/><circle cx="50" cy="51" r="3" fill="#fff"/>':''}<path d="M12 17l3-6 3 6 6 3-6 3-3 6-3-6-6-3zM79 77l2-5 3 5 5 2-5 3-3 5-2-5-5-3z" fill="#ffdf83"/></svg>`;
+}
+function unlockedCreatures(){
+ let got=[];try{got=JSON.parse(localStorage.getItem('cwGot')||'[]')}catch(e){}
+ return ['Blazbit','Floofi','Puffwing','Lunari','Cocoheart'].filter(n=>got.includes(n)||localStorage.getItem('cw'+n+'Unlocked')==='yes'||(n==='Cocoheart'&&localStorage.getItem('cwSecretGuardianUnlocked')==='yes'));
+}
+function renderCreatureCollection(){
+ const grid=document.getElementById('collectionGrid');if(!grid)return;
+ const got=unlockedCreatures();
+ grid.innerHTML=Object.keys(CREATURES).map(name=>{const c=CREATURES[name],yes=got.includes(name);return `<div class="collection-card ${yes?'':'locked'}">${creatureArt(name,!yes)}<b>${yes?c.name:'???'}</b><small>${yes?c.kind:'Not collected yet'}</small></div>`}).join('');
+ const count=document.getElementById('collectionCount');if(count)count.textContent=got.length+' / 5 collected';
+}
+function renderCreatureReveal(id,name){
+ const box=document.getElementById(id);if(!box)return;
+ const c=CREATURES[name];box.innerHTML=`<div class="reveal-kicker">✨ NEW ANIMO COLLECTED ✨</div>${creatureArt(name)}<h3>${c.name}</h3><p>${c.kind} has joined your Wonderwild collection!</p>`;box.classList.add('show');renderCreatureCollection();
+}
+
+function enterGrandPrix(){
+ const entered=(document.getElementById('playerNameInput')?.value||wonderwildPlayerName||'').trim();
+ if(!entered){alert('Enter your name before starting your adventure!');document.getElementById('playerNameInput')?.focus();return;}
+ wwSetPlayer(entered);personalizeStaticText();
+ document.getElementById('welcomeScreen').classList.add('hidden');
+ document.getElementById('raceApp').classList.remove('hidden');
+ window.scrollTo(0,0);
+ document.getElementById('preRace').classList.remove('hidden');
+}
+
+function returnToWelcome(){
+ if(game.mode==='racing'||game.mode==='countdown'){
+  if(!confirm('Leave the race? Your current attempt will be abandoned.'))return;
+ }
+ restartRace();
+ document.getElementById('raceApp').classList.add('hidden');
+ document.getElementById('welcomeScreen').classList.remove('hidden');
+ if(typeof refreshWorldLinks==='function')refreshWorldLinks();
+ window.scrollTo(0,0);
+}
+
+const canvas=document.getElementById('track');
+const ctx=canvas.getContext('2d');
+const W=canvas.width,H=canvas.height;
+const $=id=>document.getElementById(id);
+
+const controlPoints=[
+ [155,185],[255,105],[335,125],[430,72],[520,105],
+ [620,92],[755,160],[795,245],[735,292],[815,370],
+ [755,482],[590,520],[410,490],[330,525],[250,485],
+ [185,445],[125,420],[88,290],[115,220]
+];
+
+const samples=[],SUB=24;
+
+function catmull(p0,p1,p2,p3,t){
+ const t2=t*t,t3=t2*t;
+ return .5*((2*p1)+(-p0+p2)*t+
+ (2*p0-5*p1+4*p2-p3)*t2+
+ (-p0+3*p1-3*p2+p3)*t3);
+}
+
+for(let i=0;i<controlPoints.length;i++){
+ const p0=controlPoints[(i-1+controlPoints.length)%controlPoints.length];
+ const p1=controlPoints[i];
+ const p2=controlPoints[(i+1)%controlPoints.length];
+ const p3=controlPoints[(i+2)%controlPoints.length];
+
+ for(let j=0;j<SUB;j++){
+  const t=j/SUB;
+  samples.push({
+   x:catmull(p0[0],p1[0],p2[0],p3[0],t),
+   y:catmull(p0[1],p1[1],p2[1],p3[1],t)
+  });
+ }
+}
+
+const cumulative=[0];
+
+for(let i=1;i<=samples.length;i++){
+ const a=samples[i-1],b=samples[i%samples.length];
+ cumulative.push(cumulative[i-1]+Math.hypot(b.x-a.x,b.y-a.y));
+}
+
+const LENGTH=cumulative[samples.length];
+
+function wrapDist(d){
+ return((d%LENGTH)+LENGTH)%LENGTH;
+}
+
+function pointAt(d){
+ d=wrapDist(d);
+ let lo=0,hi=samples.length;
+
+ while(lo<hi){
+  const mid=(lo+hi)>>1;
+  if(cumulative[mid]<d)lo=mid+1;
+  else hi=mid;
+ }
+
+ const i=Math.max(0,lo-1);
+ const a=samples[i],b=samples[(i+1)%samples.length];
+ const seg=cumulative[i+1]-cumulative[i];
+ const t=seg?(d-cumulative[i])/seg:0;
+ const x=a.x+(b.x-a.x)*t;
+ const y=a.y+(b.y-a.y)*t;
+ const dx=b.x-a.x,dy=b.y-a.y;
+ const len=Math.hypot(dx,dy)||1;
+
+ return{x,y,tx:dx/len,ty:dy/len,nx:-dy/len,ny:dx/len};
+}
+
+function angleDiff(a,b){
+ let d=a-b;
+ while(d>Math.PI)d-=Math.PI*2;
+ while(d< -Math.PI)d+=Math.PI*2;
+ return d;
+}
+
+function roundedRect(c,x,y,w,h,r){
+ c.beginPath();
+ c.roundRect(x,y,w,h,r);
+ c.fill();
+}
+
+function pathStroke(c,width,color,dash=[]){
+ c.beginPath();
+ samples.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));
+ c.closePath();
+ c.lineWidth=width;
+ c.strokeStyle=color;
+ c.lineJoin='round';
+ c.lineCap='round';
+ c.setLineDash(dash);
+ c.stroke();
+ c.setLineDash([]);
+}
+
+const back=document.createElement('canvas');
+back.width=W;
+back.height=H;
+const b=back.getContext('2d');
+
+b.fillStyle='#8fce91';
+b.fillRect(0,0,W,H);
+
+for(let i=0;i<65;i++){
+ b.fillStyle=i%2?'#a5d99a':'#82c886';
+ b.beginPath();
+ b.arc((i*137)%W,(i*83)%H,10+(i%5)*3,0,Math.PI*2);
+ b.fill();
+}
+
+pathStroke(b,132,'#d85e72',[21,17]);
+pathStroke(b,112,'#f8e9d1',[20,18]);
+pathStroke(b,104,'#4d5059');
+pathStroke(b,3,'#e9e9df',[17,18]);
+
+for(let i=0;i<15;i++){
+ b.font='18px Arial';
+ b.fillText(['🌼','🌸','🌿'][i%3],30+(i*71)%830,28+(i*43)%535);
+}
+
+const start=pointAt(0);
+b.save();
+b.translate(start.x,start.y);
+b.rotate(Math.atan2(start.ty,start.tx)+Math.PI/2);
+
+for(let r=0;r<2;r++){
+ for(let col=0;col<8;col++){
+  b.fillStyle=(r+col)%2?'#fff':'#333';
+  b.fillRect(-35+col*9,-7+r*8,9,8);
+ }
+}
+b.restore();
+
+const PIT_ENTRY=.4110900394603879;
+const PIT_EXIT=.5889165486855026;
+const PIT_TRACK_SPAN=LENGTH*(PIT_EXIT-PIT_ENTRY);
+
+const PIT_BOX_T=.595;
+const PIT_BOX_START_T=.565;
+const PIT_BOX_END_T=.625;
+
+const pitStart=pointAt(LENGTH*PIT_ENTRY);
+const pitEnd=pointAt(LENGTH*PIT_EXIT);
+
+const pitP0={x:pitStart.x,y:pitStart.y};
+const pitP1={x:pitStart.x+pitStart.tx*62,y:pitStart.y+pitStart.ty*62};
+const pitP3={x:pitEnd.x,y:pitEnd.y};
+const pitP2={x:pitEnd.x-pitEnd.tx*62,y:pitEnd.y-pitEnd.ty*62};
+
+function pitAt(t){
+ t=Math.max(0,Math.min(1,t));
+ const u=1-t;
+
+ const x=u*u*u*pitP0.x+3*u*u*t*pitP1.x+3*u*t*t*pitP2.x+t*t*t*pitP3.x;
+ const y=u*u*u*pitP0.y+3*u*u*t*pitP1.y+3*u*t*t*pitP2.y+t*t*t*pitP3.y;
+
+ const dx=3*u*u*(pitP1.x-pitP0.x)+6*u*t*(pitP2.x-pitP1.x)+3*t*t*(pitP3.x-pitP2.x);
+ const dy=3*u*u*(pitP1.y-pitP0.y)+6*u*t*(pitP2.y-pitP1.y)+3*t*t*(pitP3.y-pitP2.y);
+
+ const len=Math.hypot(dx,dy)||1;
+ return{x,y,tx:dx/len,ty:dy/len,nx:-dy/len,ny:dx/len};
+}
+
+function drawPitPath(c){
+ c.beginPath();
+
+ for(let i=0;i<=160;i++){
+  const q=pitAt(i/160);
+  i?c.lineTo(q.x,q.y):c.moveTo(q.x,q.y);
+ }
+
+ c.lineCap='round';
+ c.lineJoin='round';
+
+ c.lineWidth=43;
+ c.strokeStyle='#f8e9d1';
+ c.stroke();
+
+ c.lineWidth=35;
+ c.strokeStyle='#555b68';
+ c.stroke();
+
+ c.lineWidth=2;
+ c.strokeStyle='#9edbf1';
+ c.setLineDash([12,10]);
+ c.stroke();
+ c.setLineDash([]);
+}
+
+function pitLabel(c,t,label){
+ const q=pitAt(t);
+ c.save();
+ c.translate(q.x+q.nx*31,q.y+q.ny*31);
+ c.fillStyle='#277ea9';
+ c.fillRect(-42,-11,84,22);
+ c.fillStyle='#fff';
+ c.font='bold 10px Times New Roman';
+ c.textAlign='center';
+ c.textBaseline='middle';
+ c.fillText(label,0,0);
+ c.restore();
+}
+
+drawPitPath(b);
+
+const pitBoxPoint=pitAt(PIT_BOX_T);
+
+b.save();
+b.translate(pitBoxPoint.x,pitBoxPoint.y);
+b.rotate(Math.atan2(pitBoxPoint.ty,pitBoxPoint.tx));
+b.fillStyle='#e7f7ff';
+b.strokeStyle='#328ab8';
+b.lineWidth=3;
+b.fillRect(-36,-23,72,46);
+b.strokeRect(-36,-23,72,46);
+b.fillStyle='#328ab8';
+b.font='bold 13px Times New Roman';
+b.textAlign='center';
+b.textBaseline='middle';
+b.fillText('BOX 07',0,0);
+b.fillStyle='#f2c85f';
+b.fillRect(-5,-20,10,40);
+b.restore();
+ pitLabel(b,.045,'PIT ENTRY · Q');
+pitLabel(b,.94,'PIT EXIT');
+
+const compounds={
+ soft:{label:'SOFT',wear:.82,grip:1.08},
+ medium:{label:'MEDIUM',wear:.58,grip:1},
+ hard:{label:'HARD',wear:.36,grip:.95}
+};
+
+let selected='medium',keys={},rafId=0,lastRank=3;
+
+let game={
+ mode:'brief',last:0,count:3,time:45,frame:0,
+ player:{
+  distance:0,offset:0,speed:0,wear:0,boost:100,
+  compound:'medium',nextCompound:'medium',pitted:false,
+  pitTime:0,inPitLane:false,pitProgress:0,
+  penaltyLock:0,contactLock:0,penalties:0
+ },
+ rivals:[],
+ message:'Blazbit: “I have warmed up the tyres. Try not to embarrass us.”',
+ messageT:0
+};
+
+function makeRivals(){
+ return[
+  {id:'nova',name:'NOVA 18',distance:28,speed:0,base:163,phase:.4,offset:-24,color:'#8b76de',pitDone:false,pitTime:0},
+  {id:'orbit',name:'ORBIT 07',distance:58,speed:0,base:156,phase:2.1,offset:24,color:'#f08ab2',pitDone:false,pitTime:0}
+ ];
+}
+
+function chooseCompound(c){
+ selected=c;
+ document.querySelectorAll('.compound').forEach(x=>
+  x.classList.toggle('selected',x.dataset.compound===c)
+ );
+}
+
+function setPitCompound(c){
+ const p=game.player;
+
+ if(!['soft','medium','hard'].includes(c))return;
+
+ if(!p.inPitLane||p.pitTime>0||p.pitted){
+  setMessage('Tyre selection is only available in the pit lane.');
+  return;
+ }
+
+ p.nextCompound=c;
+
+ document.querySelectorAll('[data-pitcompound]').forEach(x=>
+  x.classList.toggle('selected',x.dataset.pitcompound===c)
+ );
+
+ setMessage(compounds[c].label+' tyres selected. Blazbit approves this strategy.');
+}
+
+function setMessage(s,t=3){
+ game.message=s;
+ game.messageT=t;
+}
+
+function resetState(){
+ cancelAnimationFrame(rafId);
+
+ game={
+  mode:'brief',last:0,count:3,time:45,frame:0,
+  player:{
+   distance:0,offset:0,speed:0,wear:0,boost:100,
+   compound:selected,nextCompound:selected,pitted:false,
+   pitTime:0,inPitLane:false,pitProgress:0,
+   penaltyLock:0,contactLock:0,penalties:0
+  },
+  rivals:makeRivals(),
+  message:'Blazbit: “I have warmed up the tyres. Try not to embarrass us.”',
+  messageT:0
+ };
+
+ keys={};
+ lastRank=3;
+ updateHUD();
+ draw();
+}
+
+function startRace(){
+ resetState();
+ $('preRace').classList.add('hidden');
+ $('result').classList.remove('show');
+ $('countOverlay').classList.remove('hidden');
+
+ game.mode='countdown';
+ game.count=3;
+ game.last=performance.now();
+
+ $('racePhase').textContent='FORMATION';
+ setMessage('Race control: five red lights are coming on…',4);
+
+ rafId=requestAnimationFrame(loop);
+}
+
+function restartRace(){
+ resetState();
+ $('result').classList.remove('show');
+ $('pauseOverlay').classList.add('hidden');
+ $('countOverlay').classList.add('hidden');
+ $('preRace').classList.remove('hidden');
+}
+
+function backToBriefing(){
+ restartRace();
+}
+
+function resumeRace(){
+ if(game.mode!=='paused')return;
+ game.mode='racing';
+ game.last=performance.now();
+ $('pauseOverlay').classList.add('hidden');
+ setMessage('Green flag. Back to work.',2);
+ rafId=requestAnimationFrame(loop);
+}
+
+function pauseRace(){
+ if(game.mode==='racing'){
+  game.mode='paused';
+  keys={};
+  cancelAnimationFrame(rafId);
+  $('pauseOverlay').classList.remove('hidden');
+ }
+}
+
+function keyDown(e){
+
+ // Do not intercept keyboard input inside text fields.
+ // This allows crossword answers and the final letter to work.
+ if(
+  e.target instanceof HTMLElement &&
+  e.target.closest('input, textarea, select, [contenteditable="true"]')
+ ){
+  return;
+ }
+
+ const k=e.key===' '?'Space':e.key;
+
+ if(
+  ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(k)||
+  ['w','a','s','d','W','A','S','D'].includes(k)
+ ){
+  e.preventDefault();
+ }
+
+ keys[k]=true;
+
+ if(k==='Escape')pauseRace();
+ if((k==='q'||k==='Q')&&game.mode==='racing')enterPit();
+ if((k==='p'||k==='P')&&game.mode==='racing')pitStop();
+
+ if(['1','2','3'].includes(k)&&game.mode==='racing'&&game.player.inPitLane){
+  setPitCompound({'1':'soft','2':'medium','3':'hard'}[k]);
+ }
+}
+
+window.addEventListener('keydown',keyDown);
+window.addEventListener('keyup',e=>{
+ const k=e.key===' '?'Space':e.key;
+ keys[k]=false;
+});
+window.addEventListener('blur',()=>{
+ if(game.mode==='racing')pauseRace();
+});
+
+document.querySelectorAll('[data-key]').forEach(btn=>{
+ const k=btn.dataset.key;
+
+ btn.addEventListener('pointerdown',e=>{
+  e.preventDefault();
+  keys[k]=true;
+  btn.setPointerCapture(e.pointerId);
+ });
+
+ ['pointerup','pointercancel','lostpointercapture','pointerleave'].forEach(ev=>
+  btn.addEventListener(ev,()=>keys[k]=false)
+ );
+});
+
+function trackFrac(distance){
+ return((distance%LENGTH)+LENGTH)%LENGTH/LENGTH;
+}
+
+function nearPitEntry(){
+ const f=trackFrac(game.player.distance);
+ return f>=PIT_ENTRY-.006&&f<=PIT_ENTRY+.012;
+}
+
+function pitT(){
+ return Math.max(0,Math.min(1,game.player.pitProgress/PIT_TRACK_SPAN));
+}
+
+function inPitBox(){
+ const t=pitT();
+ return t>=PIT_BOX_START_T&&t<=PIT_BOX_END_T;
+}
+
+function enterPit(){
+ const p=game.player;
+
+ if(game.mode!=='racing')return;
+
+ if(p.pitted){
+  setMessage('Pit wall: “You already stopped. This is a race, not a spa weekend.”');
+  return;
+ }
+
+ if(p.inPitLane){
+  setMessage('You are already in the pit lane. Follow the blue route to BOX 07.');
+  return;
+ }
+
+ if(!nearPitEntry()){
+  setMessage('Not at PIT ENTRY yet. Watch for the blue marker just after this bend.',2.5);
+  return;
+ }
+
+ if(Math.abs(p.offset)>30){
+  setMessage('PIT ENTRY MISSED! Bring the car back towards the centre line before Q.',2.5);
+  return;
+ }
+
+ p.inPitLane=true;
+ p.pitProgress=0;
+ p.speed=Math.min(p.speed,72);
+
+ setMessage('PIT ENTRY! Smooth line into the dedicated blue pit road. Brake for BOX 07.',3);
+ updateHUD();
+}
+function pitStop(){
+ const p=game.player;
+
+ if(game.mode!=='racing')return;
+
+ if(p.pitted){
+  setMessage('Pit wall: “You already stopped. This is a race, not a spa weekend.”');
+  return;
+ }
+
+ if(!p.inPitLane){
+  setMessage('Wrong lane! Enter through the marked PIT ENTRY first.',2.5);
+  return;
+ }
+
+ if(!inPitBox()){
+  setMessage('BOX 07 is ahead. Follow the smooth blue lane to the garage marker.',2.5);
+  return;
+ }
+
+ // The car must be travelling at 35 km/h or slower before service can begin.
+ if(p.speed>35){
+  setMessage('BOX 07 — TOO FAST! Brake below 35 km/h, then press P again.',2.5);
+  updateHUD();
+  return;
+ }
+
+ // Secure the car and release all driving controls.
+ keys={};
+ p.speed=0;
+
+ // Bring the car to the exact service position.
+ const serviceProgress=PIT_TRACK_SPAN*PIT_BOX_T;
+ p.distance+=serviceProgress-p.pitProgress;
+ p.pitProgress=serviceProgress;
+
+ // Start the tyre service.
+ p.pitTime=3.4;
+ p.stagedCompound=p.nextCompound;
+
+ setMessage('BOX 07 — CAR SECURED. Crew fitting '+compounds[p.stagedCompound].label+' tyres…',3.6);
+
+ draw();
+}
+
+
+function update(dt){
+
+ if(game.mode==='countdown'){
+  game.count-=dt;
+
+  if(game.count<=0){
+   game.mode='racing';
+   game.time=45;
+   $('countOverlay').classList.add('hidden');
+   $('racePhase').textContent='GREEN FLAG';
+   setMessage('LIGHTS OUT! LIGHTS OUT! GO GO GO!',3);
+  }else{
+   $('countNumber').textContent=Math.ceil(game.count);
+  }
+
+  return;
+ }
+
+ if(game.mode!=='racing')return;
+
+ game.time=Math.max(0,game.time-dt);
+
+ if(game.time<=0){
+  finishRace(false,'Time is up. Blazbit is asking whether you were racing or sightseeing.');
+  return;
+ }
+
+ const p=game.player;
+ const accel=!!(keys.ArrowUp||keys.w||keys.W);
+ const brake=!!(keys.ArrowDown||keys.s||keys.S);
+ const left=!!(keys.ArrowLeft||keys.a||keys.A);
+ const right=!!(keys.ArrowRight||keys.d||keys.D);
+ const boosting=!!((keys.Space||keys[' '])&&p.boost>0&&p.speed>65&&!p.inPitLane);
+ const compound=compounds[p.compound];
+
+ if(p.pitTime>0){
+  p.pitTime=Math.max(0,p.pitTime-dt);
+  p.speed=0;
+
+  if(p.pitTime===0){
+   p.compound=p.stagedCompound;
+   p.nextCompound=p.compound;
+   p.wear=4;
+   p.boost=100;
+   p.pitted=true;
+   setMessage('PIT RELEASE! Fresh '+compounds[p.compound].label+' tyres. Go get them!',3);
+  }
+ }
+
+ else if(p.inPitLane){
+  if(accel)p.speed+=105*dt;
+  else p.speed-=42*dt;
+
+  if(brake)p.speed-=235*dt;
+
+  p.speed=Math.max(0,Math.min(72,p.speed));
+
+  const previousPitProgress=p.pitProgress;
+  const nextPitProgress=Math.min(PIT_TRACK_SPAN,previousPitProgress+p.speed*dt);
+  const pitDistanceTravelled=nextPitProgress-previousPitProgress;
+
+  p.pitProgress=nextPitProgress;
+
+  // Keep cumulative race distance moving through the pit lane.
+  // Never reset the completed-lap count at pit exit.
+  p.distance+=pitDistanceTravelled;
+
+  if(p.pitProgress>=PIT_TRACK_SPAN){
+   p.inPitLane=false;
+   p.pitProgress=0;
+   p.offset=0;
+   p.rejoining=false;
+   setMessage('PIT EXIT — clean merge onto the racing line. Send it!',2.5);
+  }
+ }
+
+ else{
+  const qa=pointAt(p.distance-42);
+  const qb=pointAt(p.distance+42);
+
+  const turn=Math.abs(angleDiff(
+   Math.atan2(qb.ty,qb.tx),
+   Math.atan2(qa.ty,qa.tx)
+  ));
+
+  const grip=compound.grip*(1-Math.max(0,p.wear-45)/190);
+  const maxSpeed=(boosting?238:218)*Math.max(.67,grip);
+
+  if(accel)p.speed+=175*dt;
+  else p.speed=Math.max(0,p.speed-175*dt);
+
+  if(brake)p.speed-=245*dt;
+
+  if(boosting){
+   p.speed+=105*dt;
+   p.boost=Math.max(0,p.boost-37*dt);
+  }else{
+   p.boost=Math.min(100,p.boost+5.5*dt);
+  }
+
+  p.speed=Math.max(0,Math.min(maxSpeed,p.speed));
+
+  if(p.rejoining){
+   p.offset+=(0-p.offset)*Math.min(1,dt*3);
+
+   if(Math.abs(p.offset)<5){
+    p.offset=0;
+    p.rejoining=false;
+   }
+  }else{
+   const steer=(right?1:0)-(left?1:0);
+   p.offset+=steer*(58+p.speed*.13)*dt;
+   p.offset*=Math.max(0,1-.12*dt);
+  }
+
+  const safe=205-turn*85;
+
+  if(p.speed>safe){
+   p.wear+=dt*(.4+(p.speed-safe)*.014);
+
+   if(game.frame%100===0){
+    setMessage('TIGHT CORNER! Brake before the apex. Your tyres are not made of magic.',1.8);
+   }
+  }
+
+  if(Math.abs(p.offset)>48&&!p.rejoining){
+   p.speed*=Math.pow(.86,dt*4);
+   p.wear+=dt*2;
+
+   if(p.penaltyLock<=0){
+    game.time=Math.max(0,game.time-1.5);
+    p.penaltyLock=2.3;
+    p.penalties++;
+    setMessage('TRACK LIMITS! 1.5-second penalty. Stay inside the white lines.',2.5);
+   }
+  }
+
+  p.penaltyLock=Math.max(0,p.penaltyLock-dt);
+  p.wear=Math.min(100,p.wear+dt*compound.wear*(.38+p.speed/240*.55));
+  p.distance+=p.speed*dt;
+
+  if(p.wear>=100){
+   p.speed=Math.min(p.speed,125);
+
+   if(game.frame%150===0){
+    setMessage('TYRES ARE COOKED. Grip is gone. Please pit before the tyres resign.',2.5);
+   }
+  }
+ }
+
+ game.rivals.forEach(r=>{
+  const qa=pointAt(r.distance-44);
+  const qb=pointAt(r.distance+44);
+
+  const turn=Math.abs(angleDiff(
+   Math.atan2(qb.ty,qb.tx),
+   Math.atan2(qa.ty,qa.tx)
+  ));
+
+  const cornerLoss=turn>.55?22:turn>.34?10:0;
+  const rhythm=Math.sin(r.distance/175+r.phase)*5;
+  const push=Math.sin(r.distance/420+r.phase*2)>.82?7:0;
+
+  r.speed=Math.max(133,Math.min(178,r.base+rhythm+push-cornerLoss));
+  r.distance+=r.speed*dt;
+ });
+
+ p.contactLock=Math.max(0,p.contactLock-dt);
+
+ if(!p.inPitLane&&p.pitTime<=0){
+  game.rivals.forEach(r=>{
+   const gap=Math.abs(r.distance-p.distance);
+
+   if(gap<18&&Math.abs(r.offset-p.offset)<13&&p.speed>80&&p.contactLock<=0){
+    p.speed*=.9;
+    p.contactLock=1.4;
+    setMessage('WHEEL-TO-WHEEL! Brief loss of momentum. Leave racing room.',2);
+   }
+  });
+ }
+
+ game.frame++;
+
+ if(Math.floor(p.distance/LENGTH)>=3){
+  finishRace(true,'');
+  return;
+ }
+
+ const rank=position();
+
+ if(rank!==lastRank){
+  setMessage(
+   rank<lastRank
+    ?(rank===1?'OVERTAKE! P1! Blazbit is trying not to cheer.':'Nice pass! You moved up to P'+rank+'.')
+    :'Position lost. Find a clean line and take it back.',
+   2
+  );
+
+  lastRank=rank;
+ }
+
+ game.messageT=Math.max(0,game.messageT-dt);
+
+ if(game.messageT<=0)setDefaultMessage();
+}
+
+function setDefaultMessage(){
+ const p=game.player;
+
+ if(p.pitTime>0){
+  setMessage('BOX 07: pit crew changing tyres…',1.5);
+  return;
+ }
+
+ if(p.inPitLane){
+  const t=pitT();
+
+  setMessage(
+   inPitBox()
+    ?(p.speed>35?'BOX 07 — BRAKE BELOW 35, then press P.':'BOX 07 — choose tyres with 1/2/3 and press P.')
+    :(t>=PIT_BOX_START_T-.08?'BOX 07 AHEAD — slow down and follow the blue line.':'Follow the blue pit road to BOX 07.'),
+   1.5
+  );
+  return;
+ }
+
+ if(nearPitEntry()&&!p.pitted){
+  setMessage('PIT ENTRY IS HERE — press Q to take the blue lane.',1.8);
+ }else if(p.wear>70){
+  setMessage('TYRE WARNING: grip is fading. Think about your pit stop.',1.8);
+ }else{
+  setMessage('Blazbit: “Good pace. But I have seen a tortoise take that corner faster.”',1.8);
+ }
+}
+
+// One shared cumulative distance drives map movement, lap count and ranking.
+function playerRaceDistance(){
+ return game.player.distance;
+}
+
+function raceOrder(){
+ const racers=[
+  {id:'player',name:'YOU · BLAZBIT 01',distance:playerRaceDistance(),player:true},
+  ...game.rivals.map(r=>({id:r.id,name:r.name,distance:r.distance,player:false}))
+ ];
+
+ return racers.sort((a,b)=>b.distance-a.distance);
+}
+
+function position(){
+ return raceOrder().findIndex(r=>r.player)+1;
+}
+
+function updateStandings(){
+ const rows=raceOrder();
+ const p=game.player;
+
+ $('standings').innerHTML=rows.map((r,i)=>{
+  const pct=Math.max(0,Math.min(100,r.distance/(LENGTH*3)*100));
+  let gap='LEADER';
+
+  if(i>0){
+   const ahead=rows[i-1];
+   const relative=ahead.distance-r.distance;
+   gap='+'+(relative/Math.max(
+    80,
+    r.player?p.speed:(game.rivals.find(v=>v.id===r.id)?.speed||150)
+   )).toFixed(1)+'s';
+  }
+
+  return `<div class="standing ${r.player?'me':''}">
+   <div class="row" style="justify-content:space-between;gap:5px">
+    <span class="rank">P${i+1}</span>
+    <small>${gap}</small>
+   </div>
+   <b>${r.name}</b>
+   <div class="miniBar"><span style="width:${pct}%"></span></div>
+      <small>${Math.min(3,Math.floor(r.distance/LENGTH)+1)} / 3 laps · ${Math.round(r.distance)} m</small>
+  </div>`;
+ }).join('');
+
+ const now=position();
+ $('position').textContent='P'+now;
+
+ $('positionNote').textContent=
+  now===1?'Leading the race':
+  now===2?'One place off the lead':
+  'Two rivals ahead';
+
+ $('pitStatus').textContent=
+  p.pitted
+   ?'✅ Pit stop complete · '+compounds[p.compound].label+' tyres fitted'
+   :p.inPitLane
+    ?(p.pitTime>0
+      ?'🔧 BOX 07 · service in progress'
+      :inPitBox()
+       ?(p.speed>35?'🅿️ BOX 07 · BRAKE below 35 and press P':'🅿️ BOX 07 · choose tyres and press P')
+       :'🅿️ PIT LANE · follow blue route to BOX 07')
+    :(nearPitEntry()?'🅿️ PIT ENTRY READY · press Q':'🅿️ Watch for the blue PIT ENTRY marker');
+
+ $('pitTyres').classList.toggle('hidden',!p.inPitLane||p.pitted||p.pitTime>0);
+
+ document.querySelectorAll('[data-pitcompound]').forEach(x=>
+  x.classList.toggle('selected',x.dataset.pitcompound===p.nextCompound)
+ );
+}
+
+function updateHUD(){
+ const p=game.player;
+ const s=Math.max(0,Math.ceil(game.time));
+
+ $('time').textContent=
+  game.mode==='brief'||game.mode==='countdown'
+   ?'--:--'
+   :`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+
+ $('lap').textContent=`${Math.min(3,Math.floor(playerRaceDistance()/LENGTH)+1)} / 3`;
+ $('speed').textContent=Math.round(p.speed*1.15);
+ $('wear').textContent=Math.round(p.wear)+'%';
+ $('wearBar').style.width=(100-p.wear)+'%';
+ $('boost').textContent=Math.round(p.boost)+'%';
+ $('boostBar').style.width=p.boost+'%';
+ $('raceMessage').textContent=game.message;
+
+ updateStandings();
+}
+
+function drawCar(c,distance,offset,color,player=false){
+ const q=pointAt(distance);
+ const x=q.x+q.nx*offset;
+ const y=q.y+q.ny*offset;
+ const ang=Math.atan2(q.ty,q.tx);
+
+ c.save();
+ c.translate(x,y);
+ c.rotate(ang);
+
+ c.fillStyle='#222';
+ roundedRect(c,-14,-10,10,5,2);
+ roundedRect(c,5,-10,10,5,2);
+ roundedRect(c,-14,5,10,5,2);
+ roundedRect(c,5,5,10,5,2);
+
+ c.fillStyle=color;
+ roundedRect(c,-17,-7,34,14,5);
+
+ c.fillStyle='#252b38';
+ roundedRect(c,-6,-5,13,10,3);
+
+ c.fillStyle=player?'#fff':'#e9e4ed';
+ c.fillRect(-18,-9,5,18);
+
+ c.fillStyle='#222';
+ c.fillRect(12,-9,5,18);
+
+ c.fillStyle='#fff';
+ c.fillRect(14,-4,3,8);
+
+ c.restore();
+}
+
+function drawCarAt(c,q,color,player=false){
+ const x=q.x,y=q.y,ang=Math.atan2(q.ty,q.tx);
+
+ c.save();
+ c.translate(x,y);
+ c.rotate(ang);
+
+ c.fillStyle='#222';
+ roundedRect(c,-14,-10,10,5,2);
+ roundedRect(c,5,-10,10,5,2);
+ roundedRect(c,-14,5,10,5,2);
+ roundedRect(c,5,5,10,5,2);
+
+ c.fillStyle=color;
+ roundedRect(c,-17,-7,34,14,5);
+
+ c.fillStyle='#252b38';
+ roundedRect(c,-6,-5,13,10,3);
+
+ c.fillStyle=player?'#fff':'#e9e4ed';
+ c.fillRect(-18,-9,5,18);
+
+ c.fillStyle='#222';
+ c.fillRect(12,-9,5,18);
+
+ c.fillStyle='#fff';
+ c.fillRect(14,-4,3,8);
+
+ c.restore();
+}
+
+function draw(){
+ ctx.clearRect(0,0,W,H);
+ ctx.drawImage(back,0,0);
+
+ game.rivals.forEach(r=>drawCar(ctx,r.distance,r.offset,r.color));
+
+ const p=game.player;
+
+ if(p.inPitLane){
+  const q=pitAt(pitT());
+  drawCarAt(ctx,q,'#f07867',true);
+ }else{
+  drawCar(ctx,p.distance,p.offset,'#f07867',true);
+ }
+
+ if(p.pitTime>0){
+  ctx.fillStyle='#fff';
+  ctx.font='bold 18px DynaPuff';
+  ctx.textAlign='center';
+  ctx.fillText('PIT CREW AT WORK… '+p.pitTime.toFixed(1)+'s',W/2,35);
+ }
+
+ updateHUD();
+}
+
+function finishRace(completed,reason){
+ game.mode='finished';
+ keys={};
+ cancelAnimationFrame(rafId);
+
+ $('countOverlay').classList.add('hidden');
+
+ const pos=position();
+ const p=game.player;
+ const success=completed&&pos<=2&&p.pitted&&p.pitTime<=0;
+ const title=success?'BLAZBIT UNLOCKED!':'RACE OVER';
+ const emoji=success?'🏆':'🏁';
+
+ if(success){
+  localStorage.setItem('cwBlazbitUnlocked','yes');
+  if(typeof refreshWorldLinks==='function')refreshWorldLinks();
+
+  let got=[];
+  try{
+   got=JSON.parse(localStorage.getItem('cwGot')||'[]');
+  }catch(e){}
+
+  if(!got.includes('Blazbit'))got.push('Blazbit');
+
+  localStorage.setItem('cwGot',JSON.stringify(got));
+ }
+
+ const text=success
+  ?`You completed three laps in P${pos}, made a pit stop and brought the car home. Blazbit has officially joined your Wonderwild collection! Tyres: ${compounds[p.compound].label}. Track-limit penalties: ${p.penalties}.`
+  :(reason||`You finished in P${pos}. To earn Blazbit, complete three laps, finish in the top two and complete a pit stop. ${!completed?'Three laps were not completed. ':''}${!p.pitted?'You missed the pit stop. ':''}${pos>2?'You need to overtake at least one rival.':''}`);
+
+ $('resultEmoji').textContent=emoji;
+ $('resultTitle').textContent=title;
+ $('resultText').textContent=text;
+ $('result').classList.add('show');
+ if(success)renderCreatureReveal('blazbitReveal','Blazbit');else $('blazbitReveal').classList.remove('show');
+ $('floofiNextBtn').classList.toggle('hidden',!success);
+
+ setMessage(
+  success
+   ?'Blazbit: “Okay. That was actually pretty good. Do not let it go to your head.”'
+   :'Blazbit: “Back to the garage. We are discussing your life choices.”',
+  20
+ );
+}
+
+function loop(now){
+ if(!['racing','countdown'].includes(game.mode))return;
+
+ const dt=Math.min(.04,Math.max(0,(now-game.last)/1000));
+ game.last=now;
+
+ update(dt);
+ draw();
+
+ if(['racing','countdown'].includes(game.mode)){
+  rafId=requestAnimationFrame(loop);
+ }
+}
+
+chooseCompound('medium');
+resetState();
+$('preRace').classList.remove('hidden');
+$('result').classList.remove('show');
+$('pauseOverlay').classList.add('hidden');
+$('countOverlay').classList.add('hidden');
+draw();
+
+
+
+/* GAME 2 — FLOOFI'S EXPERT F1 CROSSWORD (NO TIMER; THREE LIVES) */
+const floofiRawEntries=[
+ {answer:'FERRARI',dir:'across',row:0,col:6,clue:"Maranello's scarlet constructor; its prancing horse has appeared on the F1 grid since the championship's inaugural season."},
+ {answer:'ANTONELLI',dir:'down',row:0,col:10,clue:"The surname of the Bologna-born Italian promoted to a Mercedes race seat for 2025, paired with Russell in 2026."},
+ {answer:'PIASTRI',dir:'down',row:2,col:19,clue:"The Australian whose junior résumé includes both Formula 3 and Formula 2 titles before his McLaren seat."},
+ {answer:'POLE',dir:'across',row:3,col:9,clue:"The grid slot earned by the fastest qualifier — not a trophy awarded after the race."},
+ {answer:'HAMILTON',dir:'down',row:3,col:14,clue:"The seven-time World Champion whose move from Mercedes to Ferrari began in 2025."},
+ {answer:'BAKU',dir:'across',row:4,col:13,clue:"The Azerbaijan street venue with a famously long straight and a castle-side squeeze."},
+ {answer:'RUSSELL',dir:'across',row:5,col:6,clue:"The 2026 Mercedes driver carrying number 63; his teammate is the Italian surname running down clue 2."},
+ {answer:'MCLAREN',dir:'down',row:5,col:17,clue:"The Woking-based constructor associated with Norris, Piastri and its papaya identity."},
+ {answer:'CADILLAC',dir:'across',row:7,col:5,clue:"The American automotive marque joining the Formula 1 grid as its eleventh team in 2026."},
+ {answer:'AUDI',dir:'down',row:7,col:6,clue:"The four-ring manufacturer taking over the former Sauber entry for the 2026 season."},
+ {answer:'LECLERC',dir:'across',row:7,col:14,clue:"The Monégasque Ferrari driver whose home Grand Prix takes place in his own Principality."},
+ {answer:'MERCEDES',dir:'down',row:9,col:9,clue:"The Brackley-based constructor whose 2026 driver pairing carries numbers 63 and 12."},
+ {answer:'UNDERCUT',dir:'down',row:10,col:3,clue:"A pit-wall tactic: stop earlier for fresh tyres and use the pace advantage to jump a rival."},
+ {answer:'SILVERSTONE',dir:'across',row:10,col:5,clue:"The Northamptonshire circuit that staged the first Formula 1 World Championship race in 1950."},
+ {answer:'SENNA',dir:'across',row:11,col:0,clue:"Brazilian three-time World Champion closely associated with McLaren's late-1980s and early-1990s dominance."},
+ {answer:'SPA',dir:'down',row:11,col:0,clue:"The Belgian circuit whose Eau Rouge–Raidillon climb is one of motorsport's best-known sequences."},
+ {answer:'VERSTAPPEN',dir:'down',row:11,col:19,clue:"The Dutch driver who won four consecutive Drivers' Championships from 2021 through 2024."},
+ {answer:'MONACO',dir:'across',row:12,col:5,clue:"The Principality street track featuring a harbour, a tunnel and the Fairmont hairpin."},
+ {answer:'MONZA',dir:'down',row:12,col:14,clue:"The Italian Grand Prix venue nicknamed the Temple of Speed."},
+ {answer:'KIMI',dir:'down',row:14,col:5,clue:"Brackley's 2026 number 12 shares a garage with number 63. Enter the younger driver's four-letter given name — not his surname."},
+ {answer:'DRS',dir:'across',row:14,col:9,clue:"The three-letter rear-wing overtaking aid used under the regulations before the 2026 rules reset."},
+ {answer:'NORRIS',dir:'across',row:14,col:14,clue:"The British McLaren driver who became World Champion in 2025 and carried number 1 in 2026."},
+ {answer:'CHICANE',dir:'across',row:15,col:3,clue:"A tight sequence of alternating left- and right-hand turns designed to slow cars."},
+ {answer:'SUZUKA',dir:'across',row:16,col:9,clue:"The Japanese figure-eight circuit famous for its Esses and the high-speed 130R."}
+];
+
+const floofiStarts=[...new Map(floofiRawEntries.map(e=>[e.row+','+e.col,{row:e.row,col:e.col}])).values()]
+ .sort((a,b)=>a.row-b.row||a.col-b.col);
+const floofiNumberMap=new Map(floofiStarts.map((p,i)=>[p.row+','+p.col,i+1]));
+const floofiEntries=floofiRawEntries.map((e,i)=>({...e,id:'floofi-entry-'+i,number:floofiNumberMap.get(e.row+','+e.col),cells:[]}));
+const floofiCellMap=new Map();
+const floofiLetters={};
+let floofiActiveEntry=null;
+let floofiCurrentKey=null;
+let floofiMode='brief';
+let floofiLives=3;
+let floofiInputNodes={};
+let floofiGridBuilt=false;
+
+function floofiKey(row,col){return row+','+col;}
+function floofiBuildModel(){
+ floofiEntries.forEach(entry=>{
+  for(let i=0;i<entry.answer.length;i++){
+   const row=entry.row+(entry.dir==='down'?i:0);
+   const col=entry.col+(entry.dir==='across'?i:0);
+   const key=floofiKey(row,col);
+   entry.cells.push(key);
+   if(!floofiCellMap.has(key))floofiCellMap.set(key,{row,col,entries:[]});
+   floofiCellMap.get(key).entries.push(entry);
+  }
+ });
+}
+ function buildFloofiGrid(){
+ if(floofiGridBuilt)return;
+ const grid=document.getElementById('floofiGrid');
+ const numberAt=new Map(floofiEntries.map(e=>[floofiKey(e.row,e.col),e.number]));
+ let html='';
+ for(let row=0;row<21;row++){
+  for(let col=0;col<21;col++){
+   const key=floofiKey(row,col);
+   if(!floofiCellMap.has(key)){html+='<div class="cw-block" aria-hidden="true"></div>';continue;}
+   const number=numberAt.get(key);
+   html+=`<div class="cw-cell" data-cell="${key}">${number?`<span class="cw-num">${number}</span>`:''}<input id="floofi-cell-${key.replace(',','-')}" data-cell="${key}" maxlength="1" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Row ${row+1}, column ${col+1}" disabled></div>`;
+  }
+ }
+ grid.innerHTML=html;
+ floofiInputNodes={};
+ grid.querySelectorAll('input[data-cell]').forEach(input=>{
+  const key=input.dataset.cell;
+  floofiInputNodes[key]=input;
+  input.addEventListener('focus',()=>floofiSelectCell(key,false));
+  input.addEventListener('click',()=>floofiSelectCell(key,true));
+  input.addEventListener('input',()=>floofiHandleInput(input));
+  input.addEventListener('keydown',e=>floofiHandleKeydown(e,input));
+ });
+ floofiGridBuilt=true;
+ renderFloofiClues();
+}
+
+function renderFloofiClues(){
+ const across=document.getElementById('floofiAcrossClues');
+ const down=document.getElementById('floofiDownClues');
+ across.innerHTML='';down.innerHTML='';
+ ['across','down'].forEach(dir=>{
+  const target=dir==='across'?across:down;
+  floofiEntries.filter(e=>e.dir===dir).sort((a,b)=>a.number-b.number).forEach(entry=>{
+   const button=document.createElement('button');
+   button.type='button';button.className='cw-clue';button.dataset.entry=entry.id;
+   const n=document.createElement('span');n.className='cw-clue-num';n.textContent=entry.number;
+   const t=document.createElement('span');t.textContent=entry.clue;
+   button.append(n,t);
+   button.addEventListener('click',()=>floofiSelectEntry(entry,true));
+   target.appendChild(button);
+  });
+ });
+}
+
+function floofiSelectEntry(entry,focus=true){
+ if(!entry||!['playing','brief'].includes(floofiMode))return;
+ floofiActiveEntry=entry;
+ floofiCurrentKey=entry.cells.find(k=>!floofiLetters[k])||entry.cells[0];
+ floofiApplyHighlight();
+ if(focus&&floofiMode==='playing')floofiFocusCurrent();
+}
+
+function floofiSelectCell(key,toggle=true){
+ if(floofiMode!=='playing')return;
+ const cell=floofiCellMap.get(key);if(!cell)return;
+ const candidates=cell.entries;
+ let chosen=candidates.find(e=>e===floofiActiveEntry);
+ if(toggle&&floofiCurrentKey===key&&candidates.length>1&&chosen){
+  chosen=candidates.find(e=>e!==chosen)||chosen;
+ }else if(!chosen){
+  chosen=candidates.find(e=>e.dir==='across')||candidates[0];
+ }
+ floofiActiveEntry=chosen;floofiCurrentKey=key;
+ floofiApplyHighlight();
+}
+
+function floofiApplyHighlight(){
+ document.querySelectorAll('#floofiGrid .cw-cell').forEach(el=>{
+  const key=el.dataset.cell;
+  el.classList.toggle('cw-active',!!floofiActiveEntry&&floofiActiveEntry.cells.includes(key));
+  el.classList.toggle('cw-current',key===floofiCurrentKey);
+ });
+ document.querySelectorAll('.cw-clue').forEach(el=>el.classList.toggle('active',!!floofiActiveEntry&&el.dataset.entry===floofiActiveEntry.id));
+}
+
+function floofiFocusCurrent(){
+ if(!floofiCurrentKey)return;
+ const input=floofiInputNodes[floofiCurrentKey];if(input&&!input.disabled)input.focus({preventScroll:true});
+}
+
+function floofiHandleInput(input){
+ if(floofiMode!=='playing')return;
+ const key=input.dataset.cell;
+ const letter=(input.value||'').toUpperCase().replace(/[^A-Z]/g,'').slice(-1);
+ input.value=letter;
+ if(letter)floofiLetters[key]=letter;else delete floofiLetters[key];
+ floofiUpdateHUD();
+ if(letter&&floofiActiveEntry){
+  const index=floofiActiveEntry.cells.indexOf(key);
+  if(index>=0&&index<floofiActiveEntry.cells.length-1){floofiCurrentKey=floofiActiveEntry.cells[index+1];floofiApplyHighlight();floofiFocusCurrent();}
+ }
+}
+
+function floofiHandleKeydown(e,input){
+ if(floofiMode!=='playing')return;
+ const key=input.dataset.cell;
+ const index=floofiActiveEntry?floofiActiveEntry.cells.indexOf(key):-1;
+ if(e.key==='Backspace'){
+  e.preventDefault();
+  if(input.value){input.value='';delete floofiLetters[key];floofiCurrentKey=key;}
+  else if(index>0){const prev=floofiActiveEntry.cells[index-1];delete floofiLetters[prev];if(floofiInputNodes[prev])floofiInputNodes[prev].value='';floofiCurrentKey=prev;}
+  floofiUpdateHUD();floofiApplyHighlight();floofiFocusCurrent();return;
+ }
+ if(e.key==='ArrowLeft'||e.key==='ArrowRight'){
+  if(floofiActiveEntry){e.preventDefault();const next=Math.max(0,Math.min(floofiActiveEntry.cells.length-1,index+(e.key==='ArrowRight'?1:-1)));floofiCurrentKey=floofiActiveEntry.cells[next];floofiApplyHighlight();floofiFocusCurrent();}return;
+ }
+ if(e.key==='ArrowUp'||e.key==='ArrowDown'){
+  e.preventDefault();const cell=floofiCellMap.get(key);const row=cell.row+(e.key==='ArrowDown'?1:-1);const col=cell.col;const candidates=[...floofiCellMap.keys()].map(k=>k.split(',').map(Number)).filter(([r,c])=>c===col&&((e.key==='ArrowDown'&&r>cell.row)||(e.key==='ArrowUp'&&r<cell.row))).sort((a,b)=>Math.abs(a[0]-row)-Math.abs(b[0]-row));
+  if(candidates.length){const target=floofiKey(...candidates[0]);floofiSelectCell(target,false);floofiFocusCurrent();}return;
+ }
+ if(e.key===' '&&floofiCellMap.get(key).entries.length>1){e.preventDefault();floofiSelectCell(key,true);floofiFocusCurrent();}
+}
+
+function floofiUpdateHUD(){
+ const filled=Object.keys(floofiLetters).length;
+ const total=floofiCellMap.size;
+ const percent=Math.round(filled/total*100);
+ document.getElementById('floofiLives').textContent='♥ '.repeat(floofiLives).trim()||'0';
+ document.getElementById('floofiFilled').textContent=filled+' / '+total;
+ document.getElementById('floofiPercent').textContent=percent+'%';
+ document.getElementById('floofiProgressBar').style.width=percent+'%';
+}
+
+function floofiSetFeedback(message){document.getElementById('floofiFeedback').textContent=message;}
+function floofiEnableGrid(enabled){Object.values(floofiInputNodes).forEach(input=>input.disabled=!enabled);}
+function openFloofi(){
+ document.getElementById('welcomeScreen').classList.add('hidden');
+ document.getElementById('raceApp').classList.add('hidden');
+ document.getElementById('floofiApp').classList.remove('hidden');
+ floofiResetState(false);
+ window.scrollTo(0,0);
+}
+function backToGrandPrix(){
+ document.getElementById('floofiApp').classList.add('hidden');
+ document.getElementById('welcomeScreen').classList.add('hidden');
+ document.getElementById('raceApp').classList.remove('hidden');
+ window.scrollTo(0,0);
+}
+function startFloofi(){
+ floofiResetState(true);
+ document.getElementById('floofiBrief').classList.add('hidden');
+ document.getElementById('floofiPlay').classList.remove('hidden');
+ floofiMode='playing';floofiEnableGrid(true);
+ floofiSetFeedback('Floofi: “Twenty-four answers. Three lives. No pressure. Actually, plenty of pressure.”');
+ const first=floofiEntries.find(e=>e.dir==='across');floofiSelectEntry(first,true);
+}
+function floofiResetState(playing){
+ floofiMode=playing?'playing':'brief';floofiLives=3;floofiActiveEntry=null;floofiCurrentKey=null;
+ Object.keys(floofiLetters).forEach(k=>delete floofiLetters[k]);
+ document.querySelectorAll('#floofiGrid input').forEach(input=>input.value='');
+ document.getElementById('floofiBrief').classList.toggle('hidden',playing);
+ document.getElementById('floofiPlay').classList.toggle('hidden',!playing);
+ document.getElementById('floofiResult').classList.remove('show');
+ document.getElementById('floofiCheckBtn').disabled=false;
+ document.getElementById('floofiCheckBtn').classList.remove('hidden');
+ floofiEnableGrid(playing);floofiUpdateHUD();floofiApplyHighlight();
+}
+function restartFloofi(){
+ floofiResetState(true);
+ document.getElementById('floofiBrief').classList.add('hidden');
+ document.getElementById('floofiPlay').classList.remove('hidden');
+ floofiSetFeedback('Fresh grid. Same 24 answers. Cookie has been appointed as your invigilator.');
+ floofiSelectEntry(floofiEntries[0],true);
+}
+function checkFloofiCrossword(){
+ if(floofiMode!=='playing')return;
+ const missing=[...floofiCellMap.keys()].filter(k=>!floofiLetters[k]);
+ if(missing.length){floofiSetFeedback(`Grid incomplete: ${missing.length} square${missing.length===1?' is':'s are'} still empty. Fill every square first — an incomplete submission does not cost a life.`);const first=missing[0];floofiCurrentKey=first;const cell=floofiCellMap.get(first);floofiActiveEntry=cell.entries.find(e=>e.dir==='across')||cell.entries[0];floofiApplyHighlight();floofiFocusCurrent();return;}
+ const wrong=floofiEntries.filter(entry=>entry.cells.some((key,i)=>floofiLetters[key]!==entry.answer[i]));
+ if(wrong.length===0){finishFloofi(true);return;}
+ floofiLives--;
+ const roasts=[
+  'The grid has more plot twists than a safety-car restart. One life gone. Read those clues again.',
+  'Floofi has reviewed the evidence and would like to remind you that vibes are not a spelling system.',
+  'Cookie has filed a formal report. That was your final life — the crossword wins this round.'
+ ];
+ floofiSetFeedback(roasts[2-floofiLives]||roasts[0]);
+ floofiUpdateHUD();
+ if(floofiLives<=0)finishFloofi(false);
+}
+function finishFloofi(won){
+ floofiMode=won?'won':'lost';floofiEnableGrid(false);
+ document.getElementById('floofiCheckBtn').disabled=true;
+ const result=document.getElementById('floofiResult');
+ document.getElementById('floofiResultEmoji').textContent=won?'☁️🏆':'🫠';
+ document.getElementById('floofiResultTitle').textContent=won?'FLOOFI UNLOCKED!':'FLOOFI HAS YOU BEAT';
+ document.getElementById('floofiResultText').textContent=won
+  ?`Every crossing letter is correct. Floofi has joined your Wonderwild collection — and is already acting like the smartest creature here. Lives remaining: ${floofiLives}.`
+  :'All three lives are gone. The answers are still out there, and Floofi is being unbearably smug. Restart the puzzle and take another run at it.';
+  document.getElementById('floofiRetryBtn').textContent=won?'PLAY AGAIN':'TRY AGAIN';
+ document.getElementById('floofiNextBtnGame3').classList.toggle('hidden',!won);
+ result.classList.add('show');
+ if(won){
+  try{localStorage.setItem('cwFloofiUnlocked','yes');if(typeof refreshWorldLinks==='function')refreshWorldLinks();const got=JSON.parse(localStorage.getItem('cwGot')||'[]');if(!got.includes('Floofi'))got.push('Floofi');localStorage.setItem('cwGot',JSON.stringify(got));}catch(e){console.warn('Could not save Floofi progress:',e);}
+  renderCreatureReveal('floofiReveal','Floofi');
+  floofiSetFeedback('Floofi: “Well. That was annoyingly impressive. Welcome to the collection.”');
+ }else floofiSetFeedback('Floofi: “I shall be here, floating smugly, when you are ready to try again.”');
+}
+
+floofiBuildModel();
+buildFloofiGrid();
+floofiUpdateHUD();
+
+
+/* GAME 3 — PUFFWING'S STRUCTURAL BUILD BATTLE */
+const puffCosts={floor:{wood:1,stone:0},wall:{wood:1,stone:1},door:{wood:2,stone:1},roof:{wood:1,stone:1},ramp:{wood:2,stone:0}};
+let puffGrid=[],puffWood=32,puffStone=18,puffTool='floor',puffMode='brief',puffTime=135,puffLast=0,puffRaf=0,puffCount=3,puffBuildStarted=false;
+const puffEl=id=>document.getElementById(id);
+function emptyPuffCell(){return{floor:false,wall:false,door:false,roof:false,ramp:false};}
+function initPuffGrid(){puffGrid=Array.from({length:7},()=>Array.from({length:7},emptyPuffCell));}
+function puffCollectUnlocked(name){try{const got=JSON.parse(localStorage.getItem('cwGot')||'[]');if(!got.includes(name))got.push(name);localStorage.setItem('cwGot',JSON.stringify(got));}catch(e){console.warn('Progress save unavailable',e);}}
+function openPuffwing(){
+ if(localStorage.getItem('cwFloofiUnlocked')!=='yes'){alert('Floofi must be unlocked before this challenge.');return;}
+ stopPuffLoop();document.getElementById('welcomeScreen').classList.add('hidden');document.getElementById('raceApp').classList.add('hidden');document.getElementById('floofiApp').classList.add('hidden');document.getElementById('arenaApp').classList.add('hidden');puffEl('puffwingApp').classList.remove('hidden');resetPuffBuild();window.scrollTo(0,0);
+}
+function backToFloofi(){stopPuffLoop();puffEl('puffwingApp').classList.add('hidden');document.getElementById('floofiApp').classList.remove('hidden');window.scrollTo(0,0);}
+function selectPuffTool(tool){puffTool=tool;document.querySelectorAll('.build-tool').forEach(b=>b.classList.toggle('active',b.dataset.tool===tool));puffSetFeedback(tool==='erase'?'Eraser selected. Clear misplaced pieces and recover their materials.':tool.toUpperCase()+' selected. Choose a square on the plot.');}
+function puffSetFeedback(text){puffEl('puffFeedback').textContent=text;}
+function updatePuffResources(){puffEl('puffWood').textContent=puffWood;puffEl('puffStone').textContent=puffStone;puffEl('puffWoodSide').textContent=puffWood;puffEl('puffStoneSide').textContent=puffStone;}
+function puffRenderGrid(){
+ const grid=puffEl('puffGrid');let html='';
+ for(let r=0;r<7;r++)for(let c=0;c<7;c++){
+  const cell=puffGrid[r][c],pieces=[];
+  if(cell.floor)pieces.push('<span class="piece floor">F</span>');
+  if(cell.wall)pieces.push('<span class="piece wall">W</span>');
+  if(cell.door)pieces.push('<span class="piece door">D</span>');
+  if(cell.roof)pieces.push('<span class="piece roof">R</span>');
+  if(cell.ramp){
+   let arrow='↗',door=null;
+   for(let rr=0;rr<7;rr++)for(let cc=0;cc<7;cc++)if(puffGrid[rr][cc].door)door=[rr,cc];
+   if(door){const [dr,dc]=door;if(dr<r)arrow='↑';else if(dr>r)arrow='↓';else if(dc<c)arrow='←';else if(dc>c)arrow='→';}
+   pieces.push(`<span class="piece ramp">${arrow}</span>`);
+  }
+  const cls=(cell.floor?' has-floor':'')+(cell.ramp?' has-ramp':'');
+  html+=`<button type="button" class="build-cell${cls}" data-r="${r}" data-c="${c}" aria-label="Build square row ${r+1}, column ${c+1}"><span class="cell-coord">${r+1}.${c+1}</span>${pieces.join('')}</button>`;
+ }
+ grid.innerHTML=html;
+ grid.querySelectorAll('.build-cell').forEach(btn=>btn.addEventListener('click',()=>puffPlacePiece(Number(btn.dataset.r),Number(btn.dataset.c))));
+}
+function puffRefund(piece){const cost=puffCosts[piece];if(!cost)return;puffWood+=cost.wood;puffStone+=cost.stone;}
+function puffPlacePiece(r,c){
+ if(puffMode!=='building')return;
+ const cell=puffGrid[r][c];
+ if(puffTool==='erase'){
+  let removed=false;Object.keys(puffCosts).forEach(piece=>{if(cell[piece]){cell[piece]=false;puffRefund(piece);removed=true;}});
+  if(!removed){puffSetFeedback('There is nothing on that square to erase. A rare moment of structural perfection.');return;}
+  updatePuffResources();puffRenderGrid();puffSetFeedback('Piece removed. Materials returned to your supply.');return;
+ }
+ const piece=puffTool;
+ if(!puffCosts[piece])return;
+ if(cell[piece]){cell[piece]=false;puffRefund(piece);updatePuffResources();puffRenderGrid();puffSetFeedback(piece.toUpperCase()+' removed. Materials recovered.');return;}
+ if(['wall','door','roof'].includes(piece)&&!cell.floor){puffSetFeedback('That piece needs a foundation tile underneath. Build the floor first.');return;}
+ if(piece==='wall'&&cell.door){cell.door=false;puffRefund('door');}
+ if(piece==='door'&&cell.wall){cell.wall=false;puffRefund('wall');}
+ if(piece==='ramp'){
+  for(let rr=0;rr<7;rr++)for(let cc=0;cc<7;cc++)if(puffGrid[rr][cc].ramp){puffGrid[rr][cc].ramp=false;puffRefund('ramp');}
+ }
+ const cost=puffCosts[piece];
+ if(puffWood<cost.wood||puffStone<cost.stone){puffSetFeedback('Not enough materials. Erase a misplaced piece or rethink the build.');return;}
+ puffWood-=cost.wood;puffStone-=cost.stone;cell[piece]=true;
+ updatePuffResources();puffRenderGrid();puffSetFeedback(piece.toUpperCase()+' placed at '+(r+1)+'.'+(c+1)+'. Keep the structure connected.');
+}
+function resetPuffBuild(){
+ stopPuffLoop();initPuffGrid();puffWood=32;puffStone=18;puffTool='floor';puffMode='brief';puffTime=135;puffCount=3;puffBuildStarted=false;
+ puffEl('puffBrief').classList.remove('hidden');puffEl('puffPlay').classList.add('hidden');puffEl('puffBuildResult').classList.remove('show');puffEl('puffCountdownOverlay').classList.add('hidden');
+ selectPuffTool('floor');puffRenderGrid();updatePuffResources();puffUpdateTimer();puffEl('puffNextArenaBtn').classList.add('hidden');
+}
+function startPuffwingBuild(){
+ resetPuffBuild();puffEl('puffBrief').classList.add('hidden');puffEl('puffPlay').classList.remove('hidden');puffMode='countdown';puffCount=3;puffLast=performance.now();puffEl('puffCountdownOverlay').classList.remove('hidden');puffEl('puffCount').textContent='3';puffRaf=requestAnimationFrame(puffLoop);
+}
+function stopPuffLoop(){if(puffRaf)cancelAnimationFrame(puffRaf);puffRaf=0;if(puffMode==='building'||puffMode==='countdown')puffMode='paused';}
+function puffUpdateTimer(){const seconds=Math.max(0,Math.ceil(puffTime));puffEl('puffTime').textContent=String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');puffEl('puffStormBar').style.width=((135-puffTime)/135*100)+'%';puffEl('puffPhase').textContent=puffTime>75?'Storm gathering':puffTime>30?'Storm closing in':'FINAL STORM WARNING';}
+function puffLoop(now){
+ if(!['countdown','building'].includes(puffMode))return;
+ const dt=Math.min(.05,Math.max(0,(now-puffLast)/1000));puffLast=now;
+ if(puffMode==='countdown'){
+  puffCount-=dt;
+  if(puffCount<=0){puffMode='building';puffBuildStarted=true;puffEl('puffCountdownOverlay').classList.add('hidden');puffSetFeedback('STORM CLOCK STARTED. Puffwing: “Nine floors. Eight edges. One roof. Please do not improvise gravity.”');}
+  else puffEl('puffCount').textContent=Math.ceil(puffCount);
+ }else{
+  puffTime=Math.max(0,puffTime-dt);puffUpdateTimer();
+  if(puffTime<=0){finishPuffBuild(false,'The storm reached the plot before the skybase was structurally complete.');return;}
+ }
+ puffRaf=requestAnimationFrame(puffLoop);
+}
+function puffFindFoundation(){
+ const floors=[];for(let r=0;r<7;r++)for(let c=0;c<7;c++)if(puffGrid[r][c].floor)floors.push([r,c]);
+ if(floors.length!==9)return{error:`Foundation check: you have ${floors.length} floor tiles. The base needs exactly nine.`};
+ const minR=Math.min(...floors.map(p=>p[0])),maxR=Math.max(...floors.map(p=>p[0])),minC=Math.min(...floors.map(p=>p[1])),maxC=Math.max(...floors.map(p=>p[1]));
+ if(maxR-minR!==2||maxC-minC!==2)return{error:'Foundation check: the nine floors must form one solid 3×3 square, not a scattered platform.'};
+ for(let r=minR;r<=maxR;r++)for(let c=minC;c<=maxC;c++)if(!puffGrid[r][c].floor)return{error:'Foundation check: there is a gap in the 3×3 floor. Connect every tile.'};
+ return{minR,maxR,minC,maxC,floors};
+}
+function puffValidateStructure(){
+ const base=puffFindFoundation();if(base.error)return{ok:false,message:base.error};
+ const {minR,maxR,minC,maxC}=base;let doors=[],walls=0,roofs=0,ramps=[],badExtras=[];
+ for(let r=0;r<7;r++)for(let c=0;c<7;c++){
+  const cell=puffGrid[r][c],inside=cell.floor;
+  if(cell.wall||cell.door||cell.roof){if(!inside)badExtras.push([r,c]);}
+  if(cell.ramp)ramps.push([r,c]);
+  if(inside){
+   const edge=r===minR||r===maxR||c===minC||c===maxC;
+   if(edge){if(cell.door)doors.push([r,c]);else if(cell.wall)walls++;else return{ok:false,message:'Your outer ring has an opening. Every edge tile needs a wall, except for the single doorway.'};}
+   else if(cell.wall||cell.door)return{ok:false,message:'The centre of the base must stay open. Keep walls and the door on the outer ring.'};
+   if(cell.roof)roofs++;
+   else return{ok:false,message:'Roof check: every one of the nine foundation tiles needs a roof piece above it.'};
+  }
+ }
+ if(badExtras.length)return{ok:false,message:'There are unsupported wall or roof pieces floating outside the foundation. Remove them.'};
+ if(doors.length!==1)return{ok:false,message:`Door check: there must be exactly one doorway. Your build currently has ${doors.length}.`};
+ if(walls!==7)return{ok:false,message:`Wall check: the other seven outer tiles need walls. You currently have ${walls}.`};
+ if(roofs!==9)return{ok:false,message:'The roof is incomplete. Cover the whole 3×3 foundation.'};
+  if(ramps.length!==1)return{ok:false,message:`Ramp check: place exactly one ramp outside the doorway. Found ${ramps.length}.`};
+ const [dr,dc]=doors[0],[rr,rc]=ramps[0];
+ if(Math.abs(dr-rr)+Math.abs(dc-rc)!==1)return{ok:false,message:'The ramp does not touch the doorway. Move it to an outside square directly beside the door.'};
+ if(puffGrid[rr][rc].floor)return{ok:false,message:'The ramp must sit outside the foundation, not on top of a floor tile.'};
+ return{ok:true,message:'Structural inspection passed: connected foundation, supported roof, enclosed walls, one doorway and a connected access ramp.'};
+}
+function checkPuffBuild(){
+ if(puffMode!=='building')return;
+ const result=puffValidateStructure();
+ puffSetFeedback(result.ok?'Puffwing: “Wait… you actually understand structural integrity?!”':result.message+' No materials or lives are lost by checking. Adjust the build and try again.');
+ if(result.ok)finishPuffBuild(true,result.message);
+}
+function finishPuffBuild(won,message){
+ stopPuffLoop();puffMode=won?'won':'lost';puffEl('puffBuildResult').classList.add('show');puffEl('puffBuildEmoji').textContent=won?'🪽🏆':'🌪️';puffEl('puffBuildTitle').textContent=won?'PUFFWING UNLOCKED!':'THE STORM WON THIS ROUND';
+ puffEl('puffBuildText').textContent=won?message+' Your skybase passed inspection. Puffwing has joined your Wonderwild collection.':message+' Reset the plot and try a new layout. The structure checker will tell you what needs fixing.';
+ puffEl('puffNextArenaBtn').classList.toggle('hidden',!won);
+ if(won){try{localStorage.setItem('cwPuffwingUnlocked','yes');if(typeof refreshWorldLinks==='function')refreshWorldLinks();puffCollectUnlocked('Puffwing');}catch(e){console.warn(e);}renderCreatureReveal('puffwingReveal','Puffwing');puffSetFeedback('Puffwing: “A flawless build. I am choosing to believe you had help from a very competent architect.”');}
+ else puffSetFeedback('Puffwing: “The storm has opinions about your engineering. Rebuild and prove it wrong.”');
+}
+
+/* GAME 4 — ANIME-INSPIRED TURN-BASED CREATURE DUEL */
+const arenaFighters={
+ Blazbit:{emoji:'🔥',hp:132,quick:'Flame Flick',quickMin:18,quickMax:23,special:'Ember Break',specialMin:39,specialMax:47,specialText:'39–47 damage and sets a two-hit scorch.'},
+ Floofi:{emoji:'☁️',hp:140,quick:'Cloud Tap',quickMin:15,quickMax:20,special:'Nebula Burst',specialMin:30,specialMax:37,specialText:'30–37 damage and restores up to 14 HP.'},
+ Puffwing:{emoji:'🪽',hp:128,quick:'Wing Slash',quickMin:17,quickMax:22,special:'Cyclone Dive',specialMin:34,specialMax:42,specialText:'34–42 damage and prepares an evasive shield.'}
+};
+let arenaFighter='Blazbit',arenaState=null;
+const arena$=id=>document.getElementById(id);
+function openArena(){
+ if(localStorage.getItem('cwPuffwingUnlocked')!=='yes'){alert('Complete Puffwing’s Build Battle to unlock the arena.');return;}
+ document.querySelectorAll('.arena-fighter').forEach(b=>{const k={Blazbit:'cwBlazbitUnlocked',Floofi:'cwFloofiUnlocked',Puffwing:'cwPuffwingUnlocked'}[b.dataset.fighter];b.disabled=localStorage.getItem(k)!=='yes';});
+ if(localStorage.getItem(({Blazbit:'cwBlazbitUnlocked',Floofi:'cwFloofiUnlocked',Puffwing:'cwPuffwingUnlocked'})[arenaFighter])!=='yes')arenaFighter='Blazbit';
+ document.getElementById('welcomeScreen').classList.add('hidden');document.getElementById('raceApp').classList.add('hidden');document.getElementById('floofiApp').classList.add('hidden');arena$('puffwingApp').classList.add('hidden');arena$('arenaApp').classList.remove('hidden');arena$('arenaSelect').classList.remove('hidden');arena$('arenaBattle').classList.add('hidden');arena$('arenaResult').classList.remove('show');arena$('arenaMapReveal').classList.remove('show');selectArenaFighter(arenaFighter);window.scrollTo(0,0);
+}
+function backToPuffwing(){arena$('arenaApp').classList.add('hidden');arena$('puffwingApp').classList.remove('hidden');window.scrollTo(0,0);}
+function selectArenaFighter(name){
+ const unlockKey={Blazbit:'cwBlazbitUnlocked',Floofi:'cwFloofiUnlocked',Puffwing:'cwPuffwingUnlocked'}[name];
+ if(!arenaFighters[name]||localStorage.getItem(unlockKey)!=='yes')return;arenaFighter=name;document.querySelectorAll('.arena-fighter').forEach(b=>b.classList.toggle('selected',b.dataset.fighter===name));const f=arenaFighters[name];arena$('arenaFighterNote').textContent=name+' is ready. Signature move: '+f.special+'. Vexori has been warned.';
+}
+function startArenaBattle(){
+ const f=arenaFighters[arenaFighter];arenaState={mode:'battle',phase:1,playerHp:f.hp,maxPlayerHp:f.hp,energy:25,enemyHp:112,maxEnemyHp:112,enemyCharge:false,guard:false,healed:false,enemyShieldUsed:false,turn:0,busy:false,burnHits:0,windGuard:false};
+ arena$('arenaSelect').classList.add('hidden');arena$('arenaResult').classList.remove('show');arena$('arenaMapReveal').classList.remove('show');arena$('arenaBattle').classList.remove('hidden');arena$('arenaPlayerEmoji').textContent=f.emoji;arena$('arenaPlayerName').textContent=arenaFighter;arena$('arenaSpecialText').textContent='Costs 40 energy · '+f.specialText;arena$('arenaEnemyEmoji').textContent='🌑🐉';arena$('arenaEnemyName').textContent='VEXORI';arena$('arenaLog').textContent='Vexori descends from the starfall gate. “You made it this far. Let us see if your bond is stronger than the void.”';arena$('arenaBattleHint').textContent='Build energy with Quick Strike. Guard when Vexori begins charging.';arenaUpdate();
+}
+function arenaLogLine(text){const log=arena$('arenaLog');log.textContent+='\n'+text;log.scrollTop=log.scrollHeight;}
+function arenaUpdate(){
+ if(!arenaState)return;const s=arenaState;const f=arenaFighters[arenaFighter];
+ arena$('arenaPlayerHpText').textContent=Math.max(0,s.playerHp)+' / '+s.maxPlayerHp;arena$('arenaPlayerHpBar').style.width=Math.max(0,s.playerHp/s.maxPlayerHp*100)+'%';arena$('arenaPlayerEnergyText').textContent=s.energy+' / 100';arena$('arenaPlayerEnergyBar').style.width=s.energy+'%';
+ arena$('arenaEnemyHpText').textContent=Math.max(0,s.enemyHp)+' / '+s.maxEnemyHp;arena$('arenaEnemyHpBar').style.width=Math.max(0,s.enemyHp/s.maxEnemyHp*100)+'%';arena$('arenaEnemyState').textContent=s.enemyCharge?'CHARGING!':s.phase===2?'AWAKENED':'WATCHING';arena$('arenaEnemyEnergyBar').style.width=(s.enemyCharge?85:30)+'%';arena$('arenaPhaseLabel').textContent=s.phase===1?'PHASE 1 · THE VOID WARDEN':'PHASE 2 · VEXORI AWAKENED';
+ arena$('arenaSpecialBtn').disabled=s.energy<40||s.busy;arena$('arenaHealBtn').disabled=s.healed||s.playerHp>=s.maxPlayerHp||s.busy;['arenaQuickBtn','arenaGuardBtn'].forEach(id=>arena$(id).disabled=s.busy);
+}
+function useArenaMove(move){
+ const s=arenaState;if(!s||s.mode!=='battle'||s.busy)return;
+ const f=arenaFighters[arenaFighter];
+ if(move==='special'&&s.energy<40){arenaLogLine('Not enough energy for '+f.special+'. Use a Quick Strike or Guard to build energy.');return;}
+ if(move==='heal'&&(s.healed||s.playerHp>=s.maxPlayerHp)){arenaLogLine('Your recovery charge is unavailable or your HP is already full.');return;}
+ s.turn++;
+ let line='';
+ if(move==='quick'){
+  const damage=f.quickMin+Math.floor(Math.random()*(f.quickMax-f.quickMin+1));
+  s.enemyHp-=damage;s.energy=Math.min(100,s.energy+20);
+  line=arenaFighter+' uses '+f.quick+' for '+damage+' damage. +20 energy.';
+ }
+ if(move==='special'){
+  const damage=f.specialMin+Math.floor(Math.random()*(f.specialMax-f.specialMin+1));
+  s.enemyHp-=damage;s.energy-=40;
+  line=arenaFighter+' unleashes '+f.special+' for '+damage+' damage!';
+  if(arenaFighter==='Blazbit'){
+   s.burnHits=2;line+=' Vexori is scorched: the next two enemy hits will each suffer 5 extra damage.';
+  }else if(arenaFighter==='Floofi'){
+   const recovered=Math.min(14,s.maxPlayerHp-s.playerHp);s.playerHp+=recovered;line+=' Nebula Burst restores '+recovered+' HP.';
+  }else if(arenaFighter==='Puffwing'){
+   s.windGuard=true;line+=' Cyclone Dive leaves an evasive shield that halves the next hit.';
+  }
+ }
+ if(move==='guard'){
+  s.guard=true;s.energy=Math.min(100,s.energy+24);
+  line=arenaFighter+' raises a protective guard. The next incoming hit is reduced by 65%. +24 energy.';
+ }
+ if(move==='heal'){
+  const amount=Math.min(30,s.maxPlayerHp-s.playerHp);s.playerHp+=amount;s.healed=true;s.energy=Math.min(100,s.energy+8);
+  line=arenaFighter+' uses a recovery charm and restores '+amount+' HP. This was your one recovery charge.';
+ }
+ arenaLogLine(line);s.enemyHp=Math.max(0,s.enemyHp);arenaUpdate();
+ if(s.enemyHp<=0){
+  if(s.phase===1){
+   s.phase=2;s.enemyHp=96;s.maxEnemyHp=96;s.playerHp=Math.min(s.maxPlayerHp,s.playerHp+22);s.energy=Math.min(100,s.energy+25);s.enemyCharge=true;
+   arena$('arenaEnemyName').textContent='VEXORI · ECLIPSE FORM';arena$('arenaEnemyEmoji').textContent='🌘🐉';
+   arenaLogLine('VEXORI AWAKENS — the arena darkens. A second form emerges with 96 HP. Your bond restores 22 HP and 25 energy. It is charging a heavy strike: GUARD on your next turn!');arenaUpdate();return;
+  }
+  finishArena(true);return;
+ }
+ arenaEnemyTurn();
+}
+function arenaEnemyTurn(){
+ const s=arenaState;if(!s||s.mode!=='battle')return;
+ let damage=0,kind='';
+ if(s.enemyCharge){
+  damage=31+(s.phase===2?4:0);kind='charged';
+  s.enemyCharge=false;
+ }else if(s.phase===2&&!s.enemyShieldUsed&&s.enemyHp<58){
+  s.enemyShieldUsed=true;s.enemyCharge=true;
+  arenaLogLine('Vexori forms an eclipse shield and begins charging an even heavier strike. GUARD NOW.');arenaUpdate();return;
+ }else if(s.turn%3===0||Math.random()<.23){
+  s.enemyCharge=true;
+  arenaLogLine('Vexori gathers void energy. Its next attack will hit hard — prepare to GUARD.');arenaUpdate();return;
+ }else{
+  damage=14+Math.floor(Math.random()*5)+(s.phase===2?3:0);kind='regular';
+ }
+ if(s.guard){damage=Math.ceil(damage*.35);arenaLogLine('Your guard absorbs 65% of Vexori’s '+(kind==='charged'?'charged Eclipse Break':'Shadow Claw')+'.');s.guard=false;}
+ else if(s.windGuard){damage=Math.ceil(damage*.5);arenaLogLine('Puffwing’s evasive shield halves the incoming hit.');s.windGuard=false;}
+ else if(kind==='charged')arenaLogLine('VEXORI RELEASES ECLIPSE BREAK! The charged attack lands for '+damage+' damage.');
+  else arenaLogLine('Vexori strikes with Shadow Claw for '+damage+' damage.');
+ s.playerHp=Math.max(0,s.playerHp-damage);
+ if(s.burnHits>0){s.enemyHp=Math.max(0,s.enemyHp-5);s.burnHits--;arenaLogLine('Blazbit’s scorch deals 5 extra damage. Scorch turns remaining: '+s.burnHits+'.');}
+ arenaUpdate();
+ if(s.playerHp<=0){finishArena(false);return;}
+ if(s.enemyHp<=0){
+  if(s.phase===1){
+   s.phase=2;s.enemyHp=96;s.maxEnemyHp=96;s.playerHp=Math.min(s.maxPlayerHp,s.playerHp+22);s.energy=Math.min(100,s.energy+25);s.enemyCharge=true;
+   arena$('arenaEnemyName').textContent='VEXORI · ECLIPSE FORM';arena$('arenaEnemyEmoji').textContent='🌘🐉';
+   arenaLogLine('VEXORI AWAKENS — the scorch finishes its first form, but an Eclipse Form rises with 96 HP. Your bond restores 22 HP and 25 energy. It is charging a heavy strike: GUARD next!');arenaUpdate();return;
+  }
+  finishArena(true);return;
+ }
+ arena$('arenaBattleHint').textContent=s.enemyCharge?'Vexori is charging. Guard on your next turn.':'Choose your next move. Build energy before spending your signature attack.';
+}
+function finishArena(won){
+ const s=arenaState;if(!s)return;s.mode=won?'won':'lost';arena$('arenaBattle').classList.add('hidden');arena$('arenaResult').classList.add('show');
+ arena$('arenaResultEmoji').textContent=won?'🌟🏆':'💫';arena$('arenaResultTitle').textContent=won?'VEXORI DEFEATED — LUNARI AWAKENS!':'THE STARFALL GATE HOLDS';
+ arena$('arenaResultText').textContent=won?'You defeated both of Vexori’s forms with '+arenaFighter+'. Lunari has joined your collection — and the seal protecting Chocobloom Island has broken.':'Vexori’s final strike was too much this time. Your creature can fight again. Watch for the charge warning and guard before the impact.';
+ arena$('arenaRetryBtn').textContent=won?'REMATCH VEXORI':'TRY THE DUEL AGAIN';
+ if(won){try{localStorage.setItem('cwLunariUnlocked','yes');localStorage.setItem('cwMapUnlocked','yes');if(typeof refreshWorldLinks==='function')refreshWorldLinks();puffCollectUnlocked('Lunari');}catch(e){console.warn(e);}renderCreatureReveal('lunariReveal','Lunari');arena$('arenaMapReveal').classList.add('show');arena$('arenaRetryBtn').classList.add('hidden');}
+ else arena$('arenaRetryBtn').classList.remove('hidden');
+}
+function retryArena(){arena$('arenaResult').classList.remove('show');arena$('arenaMapReveal').classList.remove('show');arena$('arenaSelect').classList.remove('hidden');arena$('arenaBattle').classList.add('hidden');selectArenaFighter(arenaFighter);}
+
+
+
+/* CHOCOBLOOM ISLAND — ROUTE PROGRESSION, LOGIC TREASURE HUNT & USER LETTER */
+const treasureStages=[
+ {name:'Scoop District',emoji:'🍦',title:'The Choco Bite Split',question:'A box contains 24 Choco Bite pieces. {{PLAYER}} takes one-third of the pieces. Cookie then eats one-quarter of the pieces that remain. The rest are split equally between two picnic bags.\n\nHow many pieces go into EACH bag?\n\nBe careful: Cookie takes a quarter of what is left, not a quarter of the original 24.',hint:'First remove one-third of 24. Then calculate one-quarter of the remainder. Divide what is still left into two equal bags.',answer:['6','SIX'],note:'Do the operations in sequence. Do not calculate both fractions from the original 24.'},
+ {name:'Catto-Doggo Meadows',emoji:'🐾',title:'The Pawprint Coordinates',question:'The meadow uses a square grid. Columns run A to G from west to east. Rows run 1 to 7 from north to south.\n\nStart at D4 and follow the pawprints in this exact order:\n• Move 2 squares NORTH.\n• Move 1 square EAST.\n• Move 3 squares SOUTH.\n• Move 2 squares WEST.\n• Move 1 square NORTH.\n\nWhere do you finish? Enter the column letter followed by the row number (for example, B6).',hint:'Track the row and column separately. North decreases the row number; south increases it. East moves forward in the alphabet; west moves backward.',answer:['C4','C 4','C-4'],note:'The coordinate is column first, row second. Use the compass instructions in order.'},
+ {name:'Mystery Forest',emoji:'🍄',title:'The Mushroom Sequence',question:'Five glowing mushrooms display a number sequence:\n\n2  ·  6  ·  15  ·  31  ·  56  ·  ?\n\nThe forest keeper says the gaps between the numbers are not random: each gap follows a familiar mathematical pattern. What number belongs in the final space?',hint:'Calculate the differences between neighbouring terms. They are 4, 9, 16 and 25. Think of those numbers as square numbers.',answer:['92','NINETY TWO','NINETY-TWO'],note:'Find the rule in the gaps, then add the next gap to the last term.'},
+ {name:'Sunrise Point',emoji:'🌅',title:'The Four Watchers',question:'Four explorers stand in a line from WEST to EAST, in positions 1, 2, 3 and 4. Each occupies exactly one position. The explorers are Cookie, {{PLAYER}}, Floofi and Puffwing.\n\nUse all four clues:\n1. Cookie stands immediately to the LEFT of {{PLAYER}}.\n2. Cookie is NOT at either end of the line.\n3. Floofi stands at one of the two ends.\n4. Puffwing stands somewhere to the RIGHT of {{PLAYER}}.\n\nWhich POSITION does Puffwing occupy? Enter the position number.',hint:'Cookie cannot be at position 1 or 4. Since Cookie is immediately left of {{PLAYER}}, test the remaining consecutive pair. Then use the other two clues to place Floofi and Puffwing.',answer:['4','FOUR','FOURTH'],note:'There is exactly one arrangement that satisfies every clue. Do not assume the names are already in order.'},
+ {name:'Winning Grounds',emoji:'🏆',title:'The Final Chocolate Lock',question:'You have collected four pieces of information on the trail. Combine them in the exact order below to open the chest.\n\n1. The number of pieces in EACH picnic bag at Scoop District.\n2. The alphabet position of the COLUMN letter in your Catto-Doggo coordinate (A=1, B=2, C=3…).\n3. The missing number from the Mystery Forest sequence.\n4. Puffwing’s position in the Sunrise Point line.\n\nJoin those four values together, in that order, using DIGITS ONLY. Do not add spaces or hyphens. What is the five-digit chest code?',hint:'The four values are joined, not added. Convert the coordinate letter into its alphabet number, then place the sequence answer as two digits between the second and last values.',answer:['63924'],note:'This is a combination lock. Concatenate the four solved values in order; do not sum them.'}
+];
+let islandProgress=0,treasureLives=5,treasureHints=3,treasureStageIndex=0,treasureFailed=false;
+const island$=id=>document.getElementById(id);
+function safeLoadInt(key,fallback,min,max){const raw=localStorage.getItem(key);if(raw===null||raw==='')return fallback;const n=Number(raw);return Number.isInteger(n)&&n>=min&&n<=max?n:fallback;}
+function saveTreasureState(){try{localStorage.setItem('cwTreasureProgress',String(islandProgress));localStorage.setItem('cwTreasureLives',String(treasureLives));localStorage.setItem('cwTreasureHints',String(treasureHints));}catch(e){console.warn('Treasure progress could not be saved',e);}}
+function loadTreasureState(){islandProgress=safeLoadInt('cwTreasureProgress',0,0,5);treasureLives=safeLoadInt('cwTreasureLives',5,0,5);treasureHints=safeLoadInt('cwTreasureHints',3,0,3);}
+function hideAllScreens(){['welcomeScreen','raceApp','floofiApp','puffwingApp','arenaApp','islandApp','treasureApp','victoryApp'].forEach(id=>island$(id)?.classList.add('hidden'));}
+function openChocobloomMap(){
+ if(localStorage.getItem('cwMapUnlocked')!=='yes'){alert('Defeat Vexori in Starfall Arena to reveal Chocobloom Island.');return;}
+ loadTreasureState();hideAllScreens();island$('islandApp').classList.remove('hidden');renderIslandMap();window.scrollTo(0,0);
+}
+function backToArena(){hideAllScreens();island$('arenaApp').classList.remove('hidden');window.scrollTo(0,0);}
+function refreshWorldLinks(){
+ const box=document.getElementById('savedWorldLinks');if(!box)return;
+ const links=[];
+ if(localStorage.getItem('cwBlazbitUnlocked')==='yes')links.push('<button class="btn alt" onclick="openFloofi()">🧩 Floofi Crossword</button>');
+ if(localStorage.getItem('cwFloofiUnlocked')==='yes')links.push('<button class="btn alt" onclick="openPuffwing()">🪽 Puffwing Build Battle</button>');
+ if(localStorage.getItem('cwPuffwingUnlocked')==='yes')links.push('<button class="btn alt" onclick="openArena()">⚔️ Starfall Arena</button>');
+ if(localStorage.getItem('cwMapUnlocked')==='yes')links.push('<button class="btn alt" onclick="openChocobloomMap()">🗺️ Chocobloom Island</button>');
+ box.innerHTML=links.join('');box.style.display=links.length?'flex':'none';
+ renderCreatureCollection();
+}
+function renderIslandMap(){
+ loadTreasureState();
+ refreshWorldLinks();
+ renderCreatureCollection();
+ for(let i=0;i<5;i++){
+  const pin=island$('islandPin'+i);pin.classList.remove('active','done','locked');
+  if(i<islandProgress){pin.classList.add('done');pin.innerHTML='<span>✓</span>'+treasureStages[i].name.toUpperCase();}
+  else if(i===islandProgress&&islandProgress<5){pin.classList.add('active');pin.innerHTML='<span>'+treasureStages[i].emoji+'</span>'+treasureStages[i].name.toUpperCase();}
+  else{pin.classList.add('locked');pin.innerHTML='<span>🔒</span>'+treasureStages[i].name.toUpperCase();}
+ }
+ island$('islandProgressBar').style.width=(islandProgress/5*100)+'%';
+ island$('islandProgressText').textContent=islandProgress+' / 5 trail seals recovered';
+ if(islandProgress>=5){
+  island$('islandMapStatus').textContent='All five seals are solved. The chest at Winning Grounds is open, and Cocoheart has been found.';
+  island$('islandMapFeedback').textContent='Treasure hunt complete. Your Wonderwild victory is ready!';
+  island$('islandStartBtn').hidden=true;island$('islandChestCallout').hidden=false;island$('islandLetterBtn').hidden=false;
+ }else{
+  island$('islandMapStatus').textContent=islandProgress===0?'Your first clue is waiting in Scoop District. Tap the glowing pin to begin.':`The trail has led you to ${treasureStages[islandProgress].name}. The next pin is glowing on your map.`;
+    island$('islandMapFeedback').textContent=treasureLives+' trail lives and '+treasureHints+' hints remain. The next stop is '+treasureStages[islandProgress].name+'.';
+  island$('islandStartBtn').hidden=false;
+  if(treasureLives<=0){island$('islandStartBtn').textContent='RESET THE TREASURE HUNT';island$('islandStartBtn').onclick=resetTreasureHunt;island$('islandMapStatus').textContent='The trail lives are gone. Reset the hunt to begin again.';}
+  else{island$('islandStartBtn').textContent=islandProgress===0?'START THE TREASURE HUNT 🗺️':'CONTINUE THE TRAIL ✨';island$('islandStartBtn').onclick=()=>openTreasureStation(islandProgress);}
+  island$('islandChestCallout').hidden=true;island$('islandLetterBtn').hidden=true;
+ }
+}
+function openTreasureStation(index){
+ loadTreasureState();
+ if(index>islandProgress){island$('islandMapFeedback').textContent='That part of the map is still sealed. Solve the glowing location first.';return;}
+ if(index<islandProgress){island$('islandMapFeedback').textContent='You already recovered the seal from '+treasureStages[index].name+'. Follow the glowing route to the next location.';return;}
+ if(islandProgress>=5){openVictory();return;}
+ if(treasureLives<=0){island$('islandMapFeedback').textContent='The trail lives are exhausted. Reset the hunt to try again.';return;}
+ treasureStageIndex=index;treasureFailed=false;
+ const s=treasureStages[index];
+ island$('treasureStageEmoji').textContent=s.emoji;
+ island$('treasureStageKicker').textContent='STOP '+(index+1)+' OF 5 · '+s.name.toUpperCase();
+ island$('treasureStageTitle').textContent=s.title;
+ island$('treasureLocation').textContent=s.name.toUpperCase();
+ island$('treasureQuestionTitle').textContent=s.title;
+ island$('treasureQuestion').textContent=playerText(s.question);
+ island$('treasureMethodNote').textContent=s.note;
+ island$('treasureHint').textContent=s.hint;island$('treasureHint').classList.remove('show');
+ island$('treasureAnswer').value='';island$('treasureAnswer').disabled=false;
+ island$('treasureResetBtn').hidden=true;island$('treasureHintBtn').disabled=treasureHints<=0;
+ island$('treasureFeedback').textContent='Take your time. No timer is running. Work it out before submitting.';
+ updateTreasureHUD();hideAllScreens();island$('treasureApp').classList.remove('hidden');window.scrollTo(0,0);setTimeout(()=>island$('treasureAnswer').focus(),50);
+}
+function updateTreasureHUD(){
+ island$('treasureLives').textContent='♥ '.repeat(treasureLives).trim()||'0';
+ island$('treasureHints').textContent=treasureHints;
+ island$('treasureSeals').textContent=islandProgress+' / 5';
+ island$('treasureHintBtn').disabled=treasureHints<=0;
+}
+function normalizeTreasureAnswer(value){return(value||'').toUpperCase().trim().replace(/\s+/g,'').replace(/[–—]/g,'-');}
+function submitTreasureAnswer(){
+ if(treasureFailed)return;
+ const input=island$('treasureAnswer');const value=normalizeTreasureAnswer(input.value);
+ if(!value){island$('treasureFeedback').textContent='Nothing submitted. Fill in an answer first — an empty answer costs no life.';input.focus();return;}
+ const stage=treasureStages[treasureStageIndex];
+ const accepted=stage.answer.map(normalizeTreasureAnswer);
+ if(accepted.includes(value)){
+  islandProgress=Math.min(5,islandProgress+1);saveTreasureState();
+  if(islandProgress===5){
+   renderCreatureReveal('cocoheartReveal','Cocoheart');
+   try{localStorage.setItem('cwTreasureComplete','yes');localStorage.setItem('cwSecretGuardianUnlocked','yes');if(typeof refreshWorldLinks==='function')refreshWorldLinks();puffCollectUnlocked('Cocoheart');}catch(e){console.warn(e);}renderCreatureCollection();
+   hideAllScreens();island$('islandApp').classList.remove('hidden');renderIslandMap();island$('islandMapFeedback').textContent='CHEST OPEN! Cocoheart, the secret guardian, has joined your collection.';island$('islandChestCallout').hidden=false;window.scrollTo(0,0);return;
+  }
+  hideAllScreens();island$('islandApp').classList.remove('hidden');renderIslandMap();island$('islandMapFeedback').textContent='Correct! '+stage.name+' seal recovered. '+treasureStages[islandProgress].name+' is now open.';window.scrollTo(0,0);return;
+ }
+ treasureLives=Math.max(0,treasureLives-1);saveTreasureState();updateTreasureHUD();
+ const roasts=['Cookie has looked at your answer, looked at you, and quietly walked away. One trail life lost.','The island has rejected that calculation. Even the mushrooms are doing better. One life lost.','The compass is spinning. The map is disappointed. Another trail life lost.','Somewhere, a mushroom just face-palmed. One more life gone.','That is the last trail life. Cookie is now the expedition leader.'];
+ island$('treasureFeedback').textContent=roasts[Math.min(4,5-treasureLives-1)]||roasts[0];
+ if(treasureLives===0){treasureFailed=true;input.disabled=true;island$('treasureResetBtn').hidden=false;island$('treasureFeedback').textContent+=' Reset the hunt to start the five locations again.';}
+}
+function useTreasureHint(){
+ if(treasureHints<=0){island$('treasureFeedback').textContent='No hints remain. Use the clues already on the page.';return;}
+ treasureHints--;saveTreasureState();updateTreasureHUD();island$('treasureHint').classList.add('show');island$('treasureHintBtn').disabled=treasureHints<=0;island$('treasureFeedback').textContent='A little nudge from the island. Three hints are shared across the entire trail.';
+}
+function resetTreasureHunt(){
+ islandProgress=0;treasureLives=5;treasureHints=3;treasureFailed=false;
+ try{['cwTreasureProgress','cwTreasureLives','cwTreasureHints','cwTreasureComplete','cwSecretGuardianUnlocked'].forEach(k=>localStorage.removeItem(k));}catch(e){}
+ saveTreasureState();hideAllScreens();island$('islandApp').classList.remove('hidden');renderIslandMap();island$('islandMapFeedback').textContent='The trail has been reset. Begin again at Scoop District.';window.scrollTo(0,0);
+}
+function openVictory(){
+ if(localStorage.getItem('cwTreasureComplete')!=='yes' || localStorage.getItem('cwSecretGuardianUnlocked')!=='yes'){alert('Complete the treasure hunt and find Cocoheart first!');return;}
+ hideAllScreens();island$('victoryApp').classList.remove('hidden');
+ island$('victoryPlayerName').textContent=(wonderwildPlayerName||'ADVENTURER').toUpperCase();
+ window.scrollTo(0,0);
+}
+island$('treasureAnswer').addEventListener('keydown',e=>{if(e.key==='Enter')submitTreasureAnswer();});
+const savedWWName=wwOriginalGet.call(localStorage,'ww_active_player_name')||'';
+if(savedWWName){wonderwildPlayerName=savedWWName;wonderwildProfileKey=wwOriginalGet.call(localStorage,'ww_active_player_key')||wwSlug(savedWWName);document.getElementById('playerNameInput').value=savedWWName;personalizeStaticText();}
+loadTreasureState();
+renderCreatureCollection();
+if(savedWWName && typeof refreshWorldLinks==='function')refreshWorldLinks();
+</script>
+</body>
+</html>
