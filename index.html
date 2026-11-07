@@ -952,7 +952,6 @@ p{line-height:1.55;color:var(--muted)}
    <div class="creature-reveal show" style="margin:20px auto">🌟🔥☁️🪽🌙💗</div>
    <p class="letter-intro">Blazbit, Floofi, Puffwing, Lunari and Cocoheart are all part of your collection. What an adventure!</p>
    <button class="btn gold" onclick="openChocobloomMap()">BACK TO YOUR ISLAND 🗺️</button>
-   <button class="btn alt" style="margin-left:7px" onclick="changePlayer()">CHANGE PLAYER</button>
   </section>
  </div>
 </div>
@@ -974,7 +973,6 @@ function wwSlug(name){return name.trim().toLocaleLowerCase().replace(/[^a-z0-9]+
 function wwSetPlayer(name){wonderwildPlayerName=name.trim().slice(0,24);wonderwildProfileKey=wwSlug(wonderwildPlayerName);wwOriginalSet.call(localStorage,'ww_active_player_name',wonderwildPlayerName);wwOriginalSet.call(localStorage,'ww_active_player_key',wonderwildProfileKey);}
 function playerText(value){return String(value).replaceAll('{{PLAYER}}',wonderwildPlayerName||'Adventurer');}
 function personalizeStaticText(){const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode())){if(node.__wwTemplate===undefined && node.nodeValue.includes('{{PLAYER}}'))node.__wwTemplate=node.nodeValue;if(node.__wwTemplate!==undefined)node.nodeValue=playerText(node.__wwTemplate);}}
-function changePlayer(){hideAllScreens();document.getElementById('welcomeScreen').classList.remove('hidden');document.getElementById('playerNameInput').value='';document.getElementById('playerNameInput').focus();window.scrollTo(0,0);}
 
 const CREATURES={
  Blazbit:{emoji:'🔥',tone:'#ffad72',deep:'#e66d71',name:'Blazbit',kind:'Fire gremlin',shape:'M50 8 C30 8 18 26 20 48 C9 61 20 86 43 89 C65 94 84 77 80 55 C91 34 72 9 50 8Z',ears:'<path d="M27 28L17 8L39 20M65 20L84 7L76 32" fill="#ffdf83" stroke="#e66d71" stroke-width="3" stroke-linejoin="round"/>'},
